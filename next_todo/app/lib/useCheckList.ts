@@ -1,17 +1,14 @@
 // app/lib/useCheckList.ts
-import { useState } from 'react';
+//チェックリストのステータスを管理
 
-export type CheckListItem = {
-  id: string;
-  title: string;
-  status: string;
-};
+import { useState } from 'react';
+import { CheckListItem } from '@/app/lib/definitions';
 
 export function useCheckList(initialData: CheckListItem[]) {
   const [checkList, setCheckList] = useState(initialData);
 
-  const handleStatusChange = async (id: string, currentStatus: string) => {
-    const newStatus = currentStatus === 'OK' ? 'NG' : 'OK';
+  const handleStatusChange = async (id: string, currentStatus: boolean) => {
+    const newStatus = currentStatus === true ? false : true;
 
     // UIの状態を更新
     setCheckList((prev) =>

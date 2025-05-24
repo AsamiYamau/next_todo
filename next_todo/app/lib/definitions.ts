@@ -8,5 +8,5 @@ export type User = {
 export type CheckListItem = {
   id: string;
   title: string;
-  status: string;
+  status: boolean;
 };

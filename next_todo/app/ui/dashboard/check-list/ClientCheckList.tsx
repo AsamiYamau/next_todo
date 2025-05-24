@@ -1,10 +1,11 @@
 'use client';
 
-import { useCheckList, CheckListItem } from '@/app/lib/useCheckList';
-import CheckList from './CheckList';
+import { useCheckList } from '@/app/lib/useCheckList';
+import { CheckListItem } from '@/app/lib/definitions';
+import CheckList from '@/app/ui/dashboard/check-list/CheckList';
 
 export default function ClientCheckList({ data }: { data: CheckListItem[] }) {
   const { checkList, handleStatusChange } = useCheckList(data);
 
-  // return <CheckList checkList={checkList} onStatusChange={handleStatusChange} />;
+  return <CheckList checkList={checkList} onStatusChange={handleStatusChange} />;
 }

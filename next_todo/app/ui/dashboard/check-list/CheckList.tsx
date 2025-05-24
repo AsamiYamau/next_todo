@@ -4,14 +4,14 @@
 export type CheckListItem = {
   id: string;
   title: string;
-  status: string;
+  status: boolean;
 };
 
 type Props = {
   checkList: CheckListItem[];
-  onStatusChange: (id: string, currentStatus: string) => void;
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
+  onStatusChange: (id: string, currentStatus: boolean) => void;
+  // onEdit: (id: string) => void;
+  // onDelete: (id: string) => void;
 };
 
 export default function CheckList({ checkList, onStatusChange }: Props) {
@@ -30,7 +30,7 @@ export default function CheckList({ checkList, onStatusChange }: Props) {
           <div>
             <input
               type="checkbox"
-              checked={item.status === 'OK'}
+              checked={item.status === true}
               onChange={() => onStatusChange(item.id, item.status)}
             />
             <label>{item.status}</label>
