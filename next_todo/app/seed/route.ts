@@ -124,7 +124,7 @@ async function seedCheckList_CheckListCat() {
   const insertedCheckListMiddle = await Promise.all(
     CheckListMiddle.map((item) =>
       sql`
-        INSERT INTO checklist_checklist_cat (checklist_id, checklist_cat_id)
+        INSERT INTO checklist_checklistcat (checklist_id, checklist_cat_id)
         VALUES (${item.checklist_id}, ${item.checklist_cat_id})
         ON CONFLICT DO NOTHING;
       `,
