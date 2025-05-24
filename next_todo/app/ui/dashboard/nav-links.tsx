@@ -10,7 +10,8 @@ import clsx from 'clsx';
 const links = [
   { name: 'Home', href: '/dashboard'},
   { name: '提出前チェックリスト', href: '/dashboard/check-list' },
-  { name: '新規追加', href: '/dashboard/check-add' },
+  { name: '案件一覧', href: '/dashboard/project' },
+  { name: '案件新規追加', href: '/dashboard/project-add' },
 
 
 ];

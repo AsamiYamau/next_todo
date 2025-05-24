@@ -11,12 +11,12 @@ const users = [
 
 const project = [
   {
-    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81av',
+    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81b3',
     title: '05.内閣メタバース_2025',
     client: 'カドベヤ',
   },
   {
-    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81bv',
+    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81b6',
     title: '03.なぜ日本のアニメはすごいのか',
     client: 'スクゥイード',
   },

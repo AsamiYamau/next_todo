@@ -10,3 +10,8 @@ export type CheckListItem = {
   title: string;
   status: boolean;
 };
+export type Project = {
+  id: string;
+  title: string;
+  client: string;
+};
