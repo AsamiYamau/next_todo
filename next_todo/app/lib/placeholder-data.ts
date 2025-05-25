@@ -56,7 +56,7 @@ const checkListCat = [
   },
 ];
 
-//中間テーブル
+//チェックリスト中間テーブル
 const CheckListMiddle = [
   {
     id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81af',
@@ -70,5 +70,18 @@ const CheckListMiddle = [
   },
 ];
 
+//プロジェクト中間テーブル
+const ProjectMiddle = [
+  {
+    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81ag',
+    project_id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81b6',
+    checklist_cat_id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81ad',
+  },
+  {
+    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81ah',
+    project_id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd81b6',
+    checklist_cat_id: 'c05cab03-9b63-4bee-be32-b77074627db8',
+  },
+];
 
-export { users, checkList, project, checkListCat , CheckListMiddle };
+export { users, checkList, project, checkListCat , CheckListMiddle, ProjectMiddle };

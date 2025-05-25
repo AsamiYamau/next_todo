@@ -1,10 +1,13 @@
 // app/ui/CheckList.tsx
 'use client';
 
+import { spawn } from "child_process";
+
 export type CheckListItem = {
   id: string;
   title: string;
   status: boolean;
+  categories?: { id: string; title: string }[];
 };
 
 type Props = {
@@ -23,9 +26,23 @@ export default function CheckList({ checkList, onStatusChange }: Props) {
           key={item.id}
         >
           <div className="">
-          <h2 className="font-bold">{item.title}</h2>
-          <span>追加者：山内 2025/05/20</span>
-          <span>確認者：山内 2025/05/21</span>
+            <h2 className="font-bold">
+              {item.title}
+              {item.categories && item.categories.length > 0 && (
+                
+                  item.categories.map((category) => (
+                    <span
+                      key={category.id}
+                      className="ml-2 bg-green-200 px-2 py-1 rounded"
+                    >
+                      {category.title}
+                    </span>
+                  ))
+                
+              )}
+            </h2>
+            <span>追加者：山内 2025/05/20</span>
+            <span>確認者：山内 2025/05/21</span>
           </div>
           <div>
             <input

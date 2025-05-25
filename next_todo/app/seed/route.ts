@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import postgres from 'postgres';
-import { checkList,users,project,checkListCat,CheckListMiddle } from '../lib/placeholder-data';
+import { checkList,users,project,checkListCat,CheckListMiddle,ProjectMiddle } from '../lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -107,7 +107,7 @@ async function seedcheckListCat() {
   return insertedCheckListCat;
 }
 
-//中間テーブル
+//チェックリスト中間テーブル
 async function seedCheckList_CheckListCat() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
@@ -134,15 +134,42 @@ async function seedCheckList_CheckListCat() {
   return insertedCheckListMiddle;
 }
 
+//プロジェクト中間テーブル
+async function seedProjectMiddle() {
+  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS project_checklistcat (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      project_id UUID REFERENCES project(id),
+      checklist_id UUID REFERENCES checklist(id),
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+    );
+  `;
+
+  const insertedProjectMiddle = await Promise.all(
+    ProjectMiddle.map((item) =>
+      sql`
+        INSERT INTO project_checklist (project_id, checklist_cat_id)
+        VALUES (${item.project_id}, ${item.checklist_cat_id})
+        ON CONFLICT DO NOTHING;
+      `,
+    )
+  );
+
+  return insertedProjectMiddle;
+}
 
 export async function GET() {
   try {
     const result = await sql.begin((sql) => [
       // seedUsers(),
-      seedProject(),
-      seedCheckList(),
-      seedcheckListCat(),
-      seedCheckList_CheckListCat(),
+      // seedProject(),
+      // seedCheckList(),
+      // seedcheckListCat(),
+      // seedCheckList_CheckListCat(),
+      seedProjectMiddle(),
     ]);
 
     return Response.json({ message: 'Database seeded successfully' });

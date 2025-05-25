@@ -15,3 +15,10 @@ export type Project = {
   title: string;
   client: string;
 };
+
+export type CheckListItemWithCategories = {
+  id: string;
+  title: string;
+  status: boolean;
+  categories: { id: string; title: string }[];
+};
