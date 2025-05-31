@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createProject } from '@/app/lib/actions';
 
-export default function CreateProjectPage() {
+export default function CreateProjectForm() {
   const [title, setTitle] = useState('');
   const [client, setClient] = useState('');
   const router = useRouter();
@@ -20,34 +20,34 @@ export default function CreateProjectPage() {
       alert('追加に失敗しました');
     }
   }
+
   return (
-    <main>
-      <div className="flex items-center justify-between">
-        <h1 className="mb-4 text-xl md:text-2xl">案件新規作成</h1>
-      </div>
-      <div className="w-[70%] mx-auto mt-8">
-        <form onSubmit={handleSubmit}>
-          <div className="font-bold text-blue-500">⚫︎案件名</div>
+    <form onSubmit={handleSubmit}>
+      <div className="flex mt-8 justify-between">
+        <div className="w-[45%]">
+          <div className="font-bold text-blue-500">案件名</div>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="プロジェクト名"
             required
-            className='mb-4 p-2 border border-gray-300 rounded w-full mt-2'
+            className='mb-4 p-2 border border-gray-300 rounded w-full'
           />
-          <div className="font-bold text-blue-500">⚫︎クライアント名</div>
+        </div>
+        <div className="w-[45%]">
+          <div className="font-bold text-blue-500">クライアント名</div>
           <input
             value={client}
             onChange={(e) => setClient(e.target.value)}
             placeholder="クライアント名"
             required
-            className='mb-4 p-2 border border-gray-300 rounded w-full mt-2'
+            className='mb-4 p-2 border border-gray-300 rounded w-full'
           />
-          <div className="flex justify-center">
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">追加</button>
-          </div>
-        </form>
+        </div>
       </div>
-    </main>
-  );
+      <div className="flex justify-center mt-4">
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">追加</button>
+      </div>
+    </form>
+  )
 }

@@ -1,15 +1,19 @@
+export const dynamicParams = true;
+
 import { lusitana } from '@/app/ui/fonts';
 import ClientCheckList from '@/app/ui/dashboard/check-list/ClientCheckList';
 import CheckListForm from '@/app/ui/dashboard/check-list/CheckListForm';
-import { getCheckListByProjectId,getProjectById} from '@/app/lib/data';
+import { getCheckListByProjectId,getProjectById ,getCategoriesByProjectId} from '@/app/lib/data';
 
-export default async function ProjectDetailPage(props: { params: { id: string } }) {
-  const  id  = props.params.id;
+export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
+  const  id  =  params.id;
   const data = await getCheckListByProjectId(id);
 
   const project = await getProjectById(id);
 
+  const categories = await getCategoriesByProjectId(id);
 
+ 
   return (
     <main>
       <div className="flex items-center justify-between">
@@ -33,10 +37,10 @@ export default async function ProjectDetailPage(props: { params: { id: string } 
 
 
       {/* 新規追加フォーム（クライアント側で動く） */}
-      <CheckListForm projectId={id} />
+      <CheckListForm projectId={id}  projectCategories={categories}/>
 
       {/* チェックリストの表示（クライアントコンポーネント） */}
-      <ClientCheckList data={data} />
+      <ClientCheckList data={data}/>
     </main>
   );
 }

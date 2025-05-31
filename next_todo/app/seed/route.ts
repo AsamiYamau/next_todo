@@ -142,7 +142,7 @@ async function seedProjectMiddle() {
     CREATE TABLE IF NOT EXISTS project_checklistcat (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       project_id UUID REFERENCES project(id),
-      checklist_id UUID REFERENCES checklist(id),
+      checklist_cat_id UUID REFERENCES checklist_cat(id),
       created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
       updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
     );

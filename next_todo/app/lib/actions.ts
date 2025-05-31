@@ -32,6 +32,67 @@ export async function createProject(title: string, client: string) {
     throw new Error('Failed to create project');
   }
 }
+//project編集
+export async function updateProject(id: string, title: string, client: string) {
+  try {
+    await sql`
+      UPDATE project
+      SET title = ${title}, client = ${client}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    // エラーをログに出力
+    console.error('Error updating project:', error);
+    throw new Error('Failed to update project');
+  }
+}
+//project削除
+
+export async function deleteProject(projectId: string) {
+  await sql.begin(async (tx) => {
+    // 1. checklist_checklistcat の削除（checklist_id を project_id 経由で特定）
+    await tx`
+      DELETE FROM checklist_checklistcat
+      WHERE checklist_id IN (
+        SELECT id FROM checklist WHERE project_id = ${projectId}
+      )
+    `;
+
+    // 2. checklist 削除
+    await tx`
+      DELETE FROM checklist
+      WHERE project_id = ${projectId}
+    `;
+
+    // 3. project_checklistcat 削除
+    await tx`
+      DELETE FROM project_checklistcat
+      WHERE project_id = ${projectId}
+    `;
+
+    // 4. project 削除
+    await tx`
+      DELETE FROM project
+      WHERE id = ${projectId}
+    `;
+
+    // checklistcat の未使用削除
+    await tx`
+      DELETE FROM checklist_cat
+      WHERE id IN (
+        SELECT id FROM checklist_cat
+        WHERE NOT EXISTS (
+          SELECT 1 FROM checklist_checklistcat WHERE checklist_cat_id = checklist_cat.id
+        )
+        AND NOT EXISTS (
+          SELECT 1 FROM project_checklistcat WHERE checklist_cat_id = checklist_cat.id
+        )
+      )
+    `;
+  });
+}
+
+
 
 // チェックリストの新規追加　選択したカテゴリー追加と中間テーブル追加
 export async function createCheckList(title: string, projectId: string, categories: string[]) {
@@ -93,3 +154,52 @@ export async function createCheckListCategory(title: string, projectId: string) 
   }
 }
 
+// チェックリストの編集
+export async function updateCheckList(id: string, title: string, categories: string[], ) {
+  try {
+    // 現在のカテゴリーとの紐付けを削除
+    await sql`
+      DELETE FROM checklist_checklistcat
+      WHERE checklist_id = ${id}
+    `;
+    //  checklistのタイトルを更新
+    await sql`
+      UPDATE checklist
+      SET title = ${title}
+      WHERE id = ${id}
+    `;
+
+
+
+    // 3. 新しいカテゴリーとの紐付けを追加
+    for (const catId of categories) {
+      await sql`
+        INSERT INTO checklist_checklistcat (checklist_id, checklist_cat_id)
+        VALUES (${id}, ${catId})
+        ON CONFLICT DO NOTHING
+      `;
+    }
+
+  } catch (error) {
+    console.error('Error updating checklist:', error);
+    throw new Error('Failed to update checklist');
+  }
+}
+
+// checklist削除
+export async function deleteCheckList(id: string) {
+  try {
+    //中間テーブルも削除
+    await sql`
+      DELETE FROM checklist_checklistcat WHERE checklist_id = ${id}
+    `;
+    await sql`
+      DELETE FROM checklist WHERE id = ${id}
+    `;
+
+    
+  } catch (error) {
+    console.error('Error deleting checklist:', error);
+    throw new Error('Failed to delete checklist');
+  }
+}

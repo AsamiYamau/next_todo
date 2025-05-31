@@ -9,9 +9,9 @@ import clsx from 'clsx';
 // Depending on the size of the application, this would be stored in a database.
 const links = [
   { name: 'Home', href: '/dashboard'},
-  { name: '提出前チェックリスト', href: '/dashboard/check-list' },
+  // { name: '提出前チェックリスト', href: '/dashboard/check-list' },
   { name: '案件一覧', href: '/dashboard/project' },
-  { name: '案件新規追加', href: '/dashboard/project-add' },
+  { name: '案件新規追加', href: '/dashboard/project/create' },
 
 
 ];

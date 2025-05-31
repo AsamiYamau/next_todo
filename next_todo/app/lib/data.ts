@@ -1,4 +1,6 @@
 // lib/data.ts
+
+
 import postgres from 'postgres';
 import { CheckListItem,Project,CheckListItemWithCategories } from './definitions';
 
@@ -52,4 +54,51 @@ export async function getProjectById(projectId: string): Promise<Project | null>
     SELECT id, title, client FROM project WHERE id = ${projectId}
   `;
   return data.length > 0 ? data[0] : null;
+}
+
+//プロジェクト詳細で使用する、projectと紐づいたカテゴリーを中間テーブルproject_checklistcatから取得
+
+export async function getCategoriesByProjectId(projectId: string): Promise<{ id: string; title: string }[]> {
+  const data = await sql<{ id: string; title: string }[]>`
+    SELECT checklist_cat.id, checklist_cat.title
+    FROM checklist_cat
+    JOIN project_checklistcat ON project_checklistcat.checklist_cat_id = checklist_cat.id
+    WHERE project_checklistcat.project_id = ${projectId}
+  `;
+  return data;
+}
+
+// checklist編集で使用する、checklistのtitleとカテゴリーを取得
+export async function getCheckListById(checklistId: string): Promise<CheckListItemWithCategories | null> {
+  const data = await sql<CheckListItemWithCategories[]>`
+    SELECT
+      checklist.id,
+      checklist.title,
+      COALESCE(
+        json_agg(
+          json_build_object(
+            'id', checklist_cat.id,
+            'title', checklist_cat.title
+          )
+        ) FILTER (WHERE checklist_cat.id IS NOT NULL),
+        '[]'
+      ) AS categories
+    FROM checklist
+    LEFT JOIN checklist_checklistcat 
+      ON checklist_checklistcat.checklist_id = checklist.id
+    LEFT JOIN checklist_cat 
+      ON checklist_cat.id = checklist_checklistcat.checklist_cat_id
+    WHERE checklist.id = ${checklistId}
+    GROUP BY checklist.id, checklist.title
+  `;
+
+  return data.length > 0 ? data[0] : null;
+}
+
+//親のproject_idを取得
+export async function getProjectIdByCheckListId(checklistId: string): Promise<string | null> {
+  const data = await sql<{ project_id: string }[]>`
+    SELECT project_id FROM checklist WHERE id = ${checklistId}
+  `;
+  return data.length > 0 ? data[0].project_id : null;
 }

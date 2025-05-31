@@ -5,10 +5,12 @@ import CheckList, { CheckListItem } from '@/app/ui/dashboard/check-list/CheckLis
 import { useCheckList } from '@/app/lib/useCheckList';
 import ClientCheckList from '@/app/ui/dashboard/check-list/ClientCheckList';
 import { getCheckList } from '@/app/lib/data';
+import { getCategoriesByProjectId } from '@/app/lib/data';
 
 
 export default async function Page() {
   const data = await getCheckList();
+  const categories = await getCategoriesByProjectId('1'); // 仮のプロジェクトIDを使用
 
   return (
     <main>
@@ -35,8 +37,11 @@ export default async function Page() {
       <div className="flex items-center justify-between p-4 mt-4">
         <ul className="flex items-center justify-between p-4 mt-4 gap-2">
           <li className='bg-green-300 px-2'>すべて</li>
-          <li className='bg-green-300 px-2'>wp</li>
-          <li className='bg-green-300 px-2'>ios</li>
+          {categories.map((cat) => (
+            <li key={cat.id} className='bg-green-300 px-2'>
+              {cat.title}
+            </li>
+          ))}
         </ul>
         <div>
           <a href="">カテゴリー新規追加</a>

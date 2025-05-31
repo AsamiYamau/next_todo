@@ -1,13 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createCheckList, createCheckListCategory} from '@/app/lib/actions';
+import { createCheckList, createCheckListCategory } from '@/app/lib/actions';
+import Category from '@/app/ui/dashboard/project/Category'; // カテゴリーコンポーネントをインポート
+import { getCategoriesByProjectId } from '@/app/lib/data'; // カテゴリー取得関数をインポート
 
-export default function CheckListForm({ projectId }: { projectId: string }) {
+
+
+export default function CheckListForm(
+  { projectId, projectCategories }:
+    {
+      projectId: string;
+      projectCategories: { id: string; title: string }[];
+    }) {
   const [title, setTitle] = useState('');
+  const [catTitle, catSetTitle] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
   const router = useRouter();
+
+
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -23,14 +35,17 @@ export default function CheckListForm({ projectId }: { projectId: string }) {
     setTitle('');
     setCategories([]);
     router.refresh(); // 一覧を更新！
+    
   };
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createCheckListCategory(title, projectId);
-    setTitle(''); // 入力フィールドをクリア
+    await createCheckListCategory(catTitle, projectId);
+    catSetTitle(''); // 入力フィールドをクリア
     router.refresh(); // 一覧を更新！
   }
+
+
 
   return (
     <div className="">
@@ -58,36 +73,18 @@ export default function CheckListForm({ projectId }: { projectId: string }) {
                   </td>
                   <td className='pl-4'>
                     <div className="flex gap-2 mb-2">
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="category"
-                          value="wp"
-                          checked={categories.includes('wp')}
-                          onChange={handleCategoryChange}
-                        />
-                        wp
-                      </label>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="category"
-                          value="ios"
-                          checked={categories.includes('ios')}
-                          onChange={handleCategoryChange}
-                        />
-                        ios
-                      </label>
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="category"
-                          value="android"
-                          checked={categories.includes('android')}
-                          onChange={handleCategoryChange}
-                        />
-                        android
-                      </label>
+                      {projectCategories.map((cat) => (
+                        <label key={cat.id}>
+                          <input
+                            type="checkbox"
+                            name="category"
+                            value={cat.title}
+                            checked={categories.includes(cat.title)}
+                            onChange={handleCategoryChange}
+                          />
+                          {cat.title}
+                        </label>
+                      ))}
                     </div>
                   </td>
                 </tr>
@@ -112,8 +109,8 @@ export default function CheckListForm({ projectId }: { projectId: string }) {
                     <input
                       type="text"
                       placeholder="新しいカテゴリー"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
+                      value={catTitle}
+                      onChange={(e) => catSetTitle(e.target.value)}
                       required
                       className="border border-gray-300 p-2 rounded mb-2 w-full"
                     />
@@ -130,12 +127,7 @@ export default function CheckListForm({ projectId }: { projectId: string }) {
       {/* カテゴリー一覧・編集・削除 */}
       <div className="">
         <div className="">
-          <div className="">カテゴリーで絞り込む （projectに紐づいたカテゴリー一覧）</div>
-          <div className="flex gap-2">
-            <span className="bg-green-200 px-2 py-1 rounded">wp</span>
-            <span className="bg-green-200 px-2 py-1 rounded">ios</span>
-            <span className="bg-green-200 px-2 py-1 rounded">android</span>
-          </div>
+          <Category projectCategories={projectCategories} />
         </div>
         <div className="text-right">
           カテゴリー編集・削除

@@ -2,20 +2,28 @@ import { lusitana } from '@/app/ui/fonts';
 import { getProject } from '@/app/lib/data';
 import ProjectList from '@/app/ui/dashboard/project/ProjectList';
 import Link from 'next/link';
+import CreateProjectForm from '@/app/ui/dashboard/project/CreateProjectForm';
 
 export default async function Page() {
-   const data = await getProject();
+  const data = await getProject();
   return (
     <main>
-      <div className="flex items-center justify-between">
+      <div className="">
         <h1 className="mb-4 text-xl md:text-2xl">プロジェクト</h1>
-        <div>
+        <div className="border border-2 border-gray-300 p-4 rounded w-[60%] mx-auto mt-8">
+          <div className="font-bold text-blue-500">⚫︎新規案件追加</div>
+          <CreateProjectForm/>
+
+        </div>
+        {/* <div>
           <Link href="/dashboard/project/create" className="text-blue-600 hover:underline">
             新規作成
           </Link>
-        </div>
+        </div> */}
       </div>
+      <div className="mt-20">
       <ProjectList data={data} />
+      </div>
     </main>
   );
 }
