@@ -35,7 +35,7 @@ export default function CheckListForm(
     setTitle('');
     setCategories([]);
     router.refresh(); // 一覧を更新！
-    
+
   };
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
@@ -72,18 +72,26 @@ export default function CheckListForm(
                     />
                   </td>
                   <td className='pl-4'>
-                    <div className="flex gap-2 mb-2">
+                    <div className="">
                       {projectCategories.map((cat) => (
-                        <label key={cat.id}>
-                          <input
-                            type="checkbox"
-                            name="category"
-                            value={cat.title}
-                            checked={categories.includes(cat.title)}
-                            onChange={handleCategoryChange}
-                          />
-                          {cat.title}
+                        <label key={cat.id} className='flex items-center mb-2 justify-between flex-wrap'>
+                          <span>
+                            <input
+                              type="checkbox"
+                              name="category"
+                              value={cat.title}
+                              checked={categories.includes(cat.title)}
+                              onChange={handleCategoryChange}
+                              className="mr-2"
+                            />
+                            <span className='font-bold mr-4'>{cat.title}</span>
+                          </span>
+                          <span>
+                            <span>編集</span>
+                            <span>削除</span>
+                          </span>
                         </label>
+
                       ))}
                     </div>
                   </td>
@@ -128,9 +136,6 @@ export default function CheckListForm(
       <div className="">
         <div className="">
           <Category projectCategories={projectCategories} />
-        </div>
-        <div className="text-right">
-          カテゴリー編集・削除
         </div>
       </div>
     </div>
