@@ -4,16 +4,19 @@ import { lusitana } from '@/app/ui/fonts';
 import ClientCheckList from '@/app/ui/dashboard/check-list/ClientCheckList';
 import CheckListForm from '@/app/ui/dashboard/check-list/CheckListForm';
 import { getCheckListByProjectId,getProjectById ,getCategoriesByProjectId} from '@/app/lib/data';
+import { choiceCategory } from '@/app/lib/data';
 
-export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const  id  =  params.id;
-  const data = await getCheckListByProjectId(id);
+export default async function ProjectDetailPage({ params }: { params: { id: string; categoryId: string; };  }) {
+  const  projectId  =  params.id;
+  const categoryId = params.categoryId;
 
-  const project = await getProjectById(id);
+  const project = await getProjectById(projectId);
 
-  const categories = await getCategoriesByProjectId(id);
+  const categories = await getCategoriesByProjectId(projectId);
 
-  console.log('ProjectDetailPage data:', data);
+  const data = await choiceCategory(categoryId);
+console.log('ProjectDetailPage data:', data);
+
 
  
   return (
@@ -39,10 +42,11 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
 
       {/* 新規追加フォーム（クライアント側で動く） */}
-      <CheckListForm projectId={id}  projectCategories={categories}/>
+      <CheckListForm projectId={projectId}  projectCategories={categories}/>
 
+      <div className="">カテゴリーページ</div>
       {/* チェックリストの表示（クライアントコンポーネント） */}
-      <ClientCheckList data={data} projectId={id}/>
+      <ClientCheckList data={data} projectId={projectId}/>
     </main>
   );
 }

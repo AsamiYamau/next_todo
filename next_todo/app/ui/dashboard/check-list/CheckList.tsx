@@ -15,9 +15,11 @@ export type CheckListItem = {
 type Props = {
   checkList: CheckListItem[];
   onStatusChange: (id: string, currentStatus: boolean) => void;
+  projectId?: string; // プロジェクトIDはオプション
 };
 
-export default function CheckList({ checkList, onStatusChange }: Props) {
+
+export default function CheckList({ checkList, onStatusChange,projectId }: Props) {
   // 削除ハンドラ
   const handleDelete = async (id: string) => {
     if (confirm('本当に削除しますか？')) {
@@ -61,7 +63,7 @@ export default function CheckList({ checkList, onStatusChange }: Props) {
             <label>{item.status}</label>
             <div className="edit-list flex">
               <Link
-                href={`/dashboard/check-list/${item.id}/edit`}
+                href={`/dashboard/project/${projectId}/check-list/${item.id}/edit`}
                 className="text-blue-500 hover:underline"
               >
                 編集

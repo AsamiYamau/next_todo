@@ -203,3 +203,45 @@ export async function deleteCheckList(id: string) {
     throw new Error('Failed to delete checklist');
   }
 }
+
+//projectの一つのカテゴリー編集
+export async function updateCategory(id: string, title: string) {
+  try {
+    await sql`
+      UPDATE checklist_cat
+      SET title = ${title}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.error('Error updating category:', error);
+    throw new Error('Failed to update category');
+  }
+
+}
+// projectのカテゴリー削除
+export async function deleteCategory(id: string) {
+  try {
+    // 中間テーブルから削除
+    await sql`
+      DELETE FROM project_checklistcat WHERE checklist_cat_id = ${id}
+    `;
+
+    // checklist_checklistcatからも削除
+    await sql`
+      DELETE FROM checklist_checklistcat WHERE checklist_cat_id = ${id}
+    `;
+
+    // checklist_catから削除
+    await sql`
+      DELETE FROM checklist_cat WHERE id = ${id}
+    `;
+
+
+
+
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    throw new Error('Failed to delete category');
+  }
+}
+

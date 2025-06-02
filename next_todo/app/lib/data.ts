@@ -102,3 +102,40 @@ export async function getProjectIdByCheckListId(checklistId: string): Promise<st
   `;
   return data.length > 0 ? data[0].project_id : null;
 }
+//一つのカテゴリーのtitleを取得
+export async function getCategoryById(categoryId: string): Promise<{ id: string; title: string } | null> {
+  const data = await sql<{ id: string; title: string }[]>`
+    SELECT id, title FROM checklist_cat WHERE id = ${categoryId}
+  `;
+  return data.length > 0 ? data[0] : null;
+}
+
+//カテゴリーで絞り込み用　idを受け取って、カテゴリーに紐づくチェックリストを取得
+export async function choiceCategory(categoryId: string): Promise<{ id: string; title: string; status: boolean }[]> {
+  try {
+    const data = await sql<{ id: string; title: string; status: boolean }[]>`
+    SELECT
+      checklist.id,
+      checklist.title,
+      checklist.status,
+      COALESCE(
+        json_agg(
+          json_build_object(
+            'id', checklist_cat.id,
+            'title', checklist_cat.title
+          )
+        ) FILTER (WHERE checklist_cat.id IS NOT NULL),
+        '[]'
+      ) AS categories
+    FROM checklist
+    JOIN checklist_checklistcat ON checklist_checklistcat.checklist_id = checklist.id
+    LEFT JOIN checklist_cat ON checklist_cat.id = checklist_checklistcat.checklist_cat_id
+    WHERE checklist_checklistcat.checklist_cat_id = ${categoryId}
+    GROUP BY checklist.id, checklist.title, checklist.status
+  `;
+    return data;
+  } catch (error) {
+    console.error('Error fetching checklists by category ID:', error);
+    throw new Error('Failed to fetch checklists by category ID');
+  }
+}

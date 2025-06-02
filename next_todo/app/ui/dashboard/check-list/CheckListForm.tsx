@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createCheckList, createCheckListCategory } from '@/app/lib/actions';
 import Category from '@/app/ui/dashboard/project/Category'; // カテゴリーコンポーネントをインポート
 import { getCategoriesByProjectId } from '@/app/lib/data'; // カテゴリー取得関数をインポート
+import Link from 'next/link';
 
 
 
@@ -45,6 +46,19 @@ export default function CheckListForm(
     router.refresh(); // 一覧を更新！
   }
 
+  const handleDelete = async (id: string) => {
+    if (confirm('本当に削除しますか？')) {
+      try {
+        await fetch(`/api/category/${id}/delete`, {
+          method: 'DELETE',
+        });
+        alert('削除しました');
+        router.refresh(); // 一覧を更新！
+      } catch (error) {
+        alert('削除に失敗しました');
+      }
+    }
+  }
 
 
   return (
@@ -87,8 +101,19 @@ export default function CheckListForm(
                             <span className='font-bold mr-4'>{cat.title}</span>
                           </span>
                           <span>
-                            <span>編集</span>
-                            <span>削除</span>
+                            <Link
+                              href={`/dashboard/project/${projectId}/category/${cat.id}/edit`}
+                              className="text-blue-500 hover:underline mr-2"
+                            >
+                              編集
+                            </Link>
+                            <button
+                              type="button"
+                              className="ml-4 text-red-500 hover:underline"
+                              onClick={() => handleDelete(cat.id)}
+                            >
+                              削除
+                            </button>
                           </span>
                         </label>
 
@@ -132,10 +157,10 @@ export default function CheckListForm(
           </form>
         </div>
       </div>
-      {/* カテゴリー一覧・編集・削除 */}
+      {/* カテゴリー絞り込み*/}
       <div className="">
         <div className="">
-          <Category projectCategories={projectCategories} />
+          <Category projectCategories={projectCategories}  projectId={projectId}/>
         </div>
       </div>
     </div>
