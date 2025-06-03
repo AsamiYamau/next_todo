@@ -9,7 +9,7 @@ export default async function Page() {
   return (
     <main>
       <div className="">
-        <h1 className="mb-4 text-xl md:text-2xl">プロジェクト</h1>
+        <h1 className="mb-4 text-xl md:text-2xl font-bold">案件一覧</h1>
         <div className="border border-2 border-gray-300 p-4 rounded w-[60%] mx-auto mt-8">
           <div className="font-bold text-blue-500">⚫︎新規案件追加</div>
           <CreateProjectForm/>

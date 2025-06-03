@@ -44,7 +44,7 @@ export default function CreateProjectPage() {
             className='mb-4 p-2 border border-gray-300 rounded w-full mt-2'
           />
           <div className="flex justify-center">
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">追加</button>
+            <button type="submit" className="bg-blue-400 p-2 px-4 rounded font-bold text-white">追加</button>
           </div>
         </form>
       </div>

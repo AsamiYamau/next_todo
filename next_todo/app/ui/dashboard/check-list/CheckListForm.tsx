@@ -124,7 +124,7 @@ export default function CheckListForm(
               </tbody>
             </table>
             <div className="flex justify-center mt-4">
-              <button type="submit" className="bg-blue-400 p-2 px-4 rounded">追加</button>
+              <button type="submit" className="bg-blue-400 p-2 px-4 rounded font-bold text-white">追加</button>
             </div>
           </form>
         </div>
@@ -152,7 +152,7 @@ export default function CheckListForm(
               </tbody>
             </table>
             <div className="flex justify-center mt-4">
-              <button type="submit" className="bg-blue-400 p-2 px-4 rounded">追加</button>
+              <button type="submit" className="bg-blue-400 p-2 px-4 rounded font-bold text-white">追加</button>
             </div>
           </form>
         </div>

@@ -25,7 +25,7 @@ export default function ProjectList({ data }: { data: Project[] }) {
     <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {data.map((project) => (
         <li
-          className="flex items-center justify-between bg-blue-100 p-4 mt-4"
+          className="flex items-center justify-between bg-sky-100 p-4 mt-4 border-2 border-blue-200 rounded"
           key={project.id}
         >
           <div className="">

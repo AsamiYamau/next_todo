@@ -19,15 +19,15 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
   return (
     <main>
       <div className="flex items-center justify-between">
-        <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl font-bold`}> 
           提出前チェックリスト
         </h1>
       </div>
 
       <div className="flex items-center justify-between p-4 mt-4">
         <div>
-          <div>案件名：{project?.title ?? 'タイトル未設定'}</div>
-          <div>クライアント:{project?.client ?? 'クライアント未設定'}</div>
+          <div className='font-bold text-xl'>案件名：{project?.title ?? 'タイトル未設定'}</div>
+          <div className='font-bold text-xl mt-2'>クライアント:{project?.client ?? 'クライアント未設定'}</div>
         </div>
         <div>
           <div>チェック進捗</div>

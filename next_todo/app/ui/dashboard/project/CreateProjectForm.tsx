@@ -46,7 +46,7 @@ export default function CreateProjectForm() {
         </div>
       </div>
       <div className="flex justify-center mt-4">
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">追加</button>
+        <button type="submit" className="bg-blue-400 p-2 px-4 rounded font-bold text-white">追加</button>
       </div>
     </form>
   )

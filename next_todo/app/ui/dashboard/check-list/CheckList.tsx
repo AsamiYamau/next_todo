@@ -32,7 +32,7 @@ export default function CheckList({ checkList, onStatusChange,projectId }: Props
     <ul>
       {checkList.map((item) => (
         <li
-          className="flex items-center justify-between bg-blue-100 p-4 mt-4"
+          className="flex items-center justify-between bg-sky-100 p-4 mt-4 border-2 border-blue-200 rounded"
           key={item.id}
         >
           <div className="">
