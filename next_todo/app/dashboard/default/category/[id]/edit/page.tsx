@@ -1,8 +1,8 @@
 import { getDefaultCategoryById } from '@/app/lib/data';
 import CategoryEditForm from '@/app/ui/dashboard/default/CategoryEditForm';
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const categoryId = params.id;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id: categoryId } = await params;
   console.log('カテゴリーID:', categoryId);
   const category = await getDefaultCategoryById(categoryId);
   console.log('カテゴリー情報:', category);

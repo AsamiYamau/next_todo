@@ -2,8 +2,9 @@
 import ProjectEditForm from '@/app/ui/dashboard/project/ProjectEditForm';
 import { getProjectById } from '@/app/lib/data';
 
-export default async function Page({ params }: { params: { id: string } }) {
-    const project = await getProjectById(params.id);
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params; // Promise を await する
+    const project = await getProjectById(id);
 
 
   return (

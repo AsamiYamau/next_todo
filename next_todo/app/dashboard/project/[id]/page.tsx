@@ -6,8 +6,12 @@ import CheckListForm from '@/app/ui/dashboard/check-list/CheckListForm';
 import AddDefault from '@/app/ui/dashboard/project/AddDefault';
 import { getCheckListByProjectId,getProjectById ,getCategoriesByProjectId} from '@/app/lib/data';
 
-export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const  id  =  params.id;
+export default async function ProjectDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+   const { id } = await params;
   const data = await getCheckListByProjectId(id);
 
   const project = await getProjectById(id);

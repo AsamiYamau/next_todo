@@ -1,13 +1,13 @@
 import { getCategoryById } from '@/app/lib/data';
 import CategoryEditForm from '@/app/ui/dashboard/project/CategoryEditForm';
 
-export default async function Page({ params }: 
-  { params: { id: string; categoryId: string } }) {
-
-  const categoryId = params.categoryId;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string; categoryId: string }>;
+}) {
+  const { id: projectId, categoryId } = await params;
   const category = await getCategoryById(categoryId);
-
-  const projectId = params.id; // プロジェクトIDを取得
 
   return (
     <div className="p-4">

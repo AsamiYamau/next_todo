@@ -5,13 +5,8 @@ import ClientCheckList from '@/app/ui/dashboard/default/ClientCheckList';
 import CheckListForm from '@/app/ui/dashboard/default/CheckListForm';
 import { getDefaultCheckList,getDefaultCheckListCategory} from '@/app/lib/data';
 
-export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
-  const  id  =  params.id;
-  // const data = await getCheckListByProjectId(id);
+export default async function ProjectDetailPage() {
 
-  // const project = await getProjectById(id);
-
-  // const categories = await getCategoriesByProjectId(id);
 
   const data = await getDefaultCheckList();// デフォルトチェックリストを取得
   const categories = await getDefaultCheckListCategory(); // デフォルトチェックリストのカテゴリーを取得

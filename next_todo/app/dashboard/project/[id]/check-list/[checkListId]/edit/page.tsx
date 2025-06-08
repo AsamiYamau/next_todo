@@ -1,8 +1,10 @@
 import CheckListEditForm from '@/app/ui/dashboard/check-list/CheckListEditForm';
 import { getCheckListById,getProjectIdByCheckListId,getCategoriesByProjectId } from '@/app/lib/data';
 
-export default async function CheckListEditPage({ params }: { params: { checkListId: string } }) {
-  const checkListId = params.checkListId;
+export default async function CheckListEditPage({ params }: { params: Promise<{ checkListId: string }> }) {
+
+  const { checkListId } = await params; // Promise を await する
+
 
   const checkListData = await getCheckListById(checkListId);
   // project_idを取得
