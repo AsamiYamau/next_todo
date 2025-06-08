@@ -40,3 +40,5 @@ export async function POST(req: Request, { params }: { params: { id: string } })
 
   return NextResponse.json({ ok: true });
 }
+
+//元々デフォでchecklistと紐づいたカテゴリーがあると、プロジェクトに追加後にカテゴリー削除してもリストと紐づいたままになってる
