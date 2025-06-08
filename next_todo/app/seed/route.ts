@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import postgres from 'postgres';
-import { checkList,users,project,checkListCat,CheckListMiddle,ProjectMiddle } from '../lib/placeholder-data';
+import { checkList,users,project,checkListCat,CheckListMiddle,ProjectMiddle,DefaultcheckList,  DefaultcheckListCat, DefaultCheckListMiddle} from '../lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -161,6 +161,86 @@ async function seedProjectMiddle() {
   return insertedProjectMiddle;
 }
 
+
+//デフォルトチェックリスト用
+async function seedDfautlCheckList() {
+  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS default_checklist (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      status BOOLEAN NOT NULL DEFAULT false,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+    );
+  `;
+
+  const insertedCheckList = await Promise.all(
+    DefaultcheckList.map(
+      (checkListitem) => sql`
+        INSERT INTO default_checklist (id, title, status)
+        VALUES (${checkListitem.id}, ${checkListitem.title}, ${checkListitem.status})
+        ON CONFLICT (id) DO NOTHING;
+      `,
+    ),
+  );
+
+  return insertedCheckList;
+}
+
+async function seedDfautlcheckListCat() {
+  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS default_checklist_cat (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+    );
+  `;
+
+  const insertedCheckListCat = await Promise.all(
+    DefaultcheckListCat.map(
+      (checkListCatitem) => sql`
+        INSERT INTO checklist_cat (id, title)
+        VALUES (${checkListCatitem.id}, ${checkListCatitem.title})
+        ON CONFLICT (id) DO NOTHING;
+      `,
+    ),
+  );
+
+  return insertedCheckListCat;
+}
+
+//チェックリスト中間テーブル
+async function seedDfautlCheckList_DfautlCheckListCat() {
+  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS default_checklist_default_checklistcat (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      default_checklist_id UUID REFERENCES default_checklist(id),
+      default_checklist_cat_id UUID REFERENCES default_checklist_cat(id),
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+    );
+  `;
+
+  const insertedCheckListMiddle = await Promise.all(
+    DefaultCheckListMiddle.map((item) =>
+      sql`
+        INSERT INTO default_checklist_default_checklistcat (default_checklist_id, default_checklist_cat_id)
+        VALUES (${item.checklist_id}, ${item.checklist_cat_id})
+        ON CONFLICT DO NOTHING;
+      `,
+    )
+  );
+
+  return insertedCheckListMiddle;
+}
+
 export async function GET() {
   try {
     const result = await sql.begin((sql) => [
@@ -169,7 +249,10 @@ export async function GET() {
       // seedCheckList(),
       // seedcheckListCat(),
       // seedCheckList_CheckListCat(),
-      seedProjectMiddle(),
+      // seedProjectMiddle(),
+      seedDfautlCheckList(),
+      seedDfautlcheckListCat(),
+      seedDfautlCheckList_DfautlCheckListCat(),
     ]);
 
     return Response.json({ message: 'Database seeded successfully' });

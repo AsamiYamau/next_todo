@@ -12,6 +12,7 @@ const links = [
   // { name: '提出前チェックリスト', href: '/dashboard/check-list' },
   { name: '案件一覧', href: '/dashboard/project' },
   { name: '案件新規追加', href: '/dashboard/project/create' },
+  { name: 'デフォルトチェックリスト設定', href: '/dashboard/default' },
 
 
 ];

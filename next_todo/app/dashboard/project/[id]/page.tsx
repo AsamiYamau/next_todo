@@ -3,6 +3,7 @@ export const dynamicParams = true;
 import { lusitana } from '@/app/ui/fonts';
 import ClientCheckList from '@/app/ui/dashboard/check-list/ClientCheckList';
 import CheckListForm from '@/app/ui/dashboard/check-list/CheckListForm';
+import AddDefault from '@/app/ui/dashboard/project/AddDefault';
 import { getCheckListByProjectId,getProjectById ,getCategoriesByProjectId} from '@/app/lib/data';
 
 export default async function ProjectDetailPage({ params }: { params: { id: string } }) {
@@ -15,6 +16,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
 
   console.log('ProjectDetailPage data:', data);
 
+
  
   return (
     <main>
@@ -22,6 +24,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl font-bold`}> 
           提出前チェックリスト
         </h1>
+      <AddDefault projectId={id}/>
       </div>
 
       <div className="flex items-center justify-between p-4 mt-4">

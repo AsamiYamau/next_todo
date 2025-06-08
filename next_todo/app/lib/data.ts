@@ -139,3 +139,72 @@ export async function choiceCategory(categoryId: string): Promise<{ id: string; 
     throw new Error('Failed to fetch checklists by category ID');
   }
 }
+
+//デフォルトチェックリストを取得
+export async function getDefaultCheckList(): Promise<CheckListItemWithCategories[]> {
+  const data = await sql<CheckListItemWithCategories[]>`
+    SELECT
+      default_checklist.id,
+      default_checklist.title,
+      default_checklist.status,
+      COALESCE(
+        json_agg(
+          json_build_object(
+            'id', default_checklist_cat.id,
+            'title', default_checklist_cat.title
+          )
+        ) FILTER (WHERE default_checklist_cat.id IS NOT NULL),
+        '[]'
+      ) AS categories
+    FROM default_checklist
+    LEFT JOIN default_checklist_default_checklistcat 
+      ON default_checklist_default_checklistcat.default_checklist_id = default_checklist.id
+    LEFT JOIN default_checklist_cat 
+      ON default_checklist_cat.id = default_checklist_default_checklistcat.default_checklist_cat_id
+    GROUP BY default_checklist.id, default_checklist.title, default_checklist.status
+  `;
+
+  return data;
+}
+//デフォルトチェックリストのカテゴリーを取得
+export async function getDefaultCheckListCategory(): Promise<{ id: string; title: string }[]> {
+  const data = await sql<{ id: string; title: string }[]>`
+    SELECT id, title FROM default_checklist_cat
+  `;
+  return data;
+}
+
+//デフォルト　１つのカテゴリーのtitleを取得
+export async function getDefaultCategoryById(categoryId: string): Promise<{ id: string; title: string } | null> {
+  const data = await sql<{ id: string; title: string }[]>`
+    SELECT id, title FROM default_checklist_cat WHERE id = ${categoryId}
+  `;
+  return data.length > 0 ? data[0] : null;
+}
+
+// checklist編集で使用する、checklistのtitleとカテゴリーを取得
+export async function getDefaultCheckListById(checklistId: string): Promise<CheckListItemWithCategories | null> {
+  const data = await sql<CheckListItemWithCategories[]>`
+    SELECT
+      default_checklist.id,
+      default_checklist.title,
+      COALESCE(
+        json_agg(
+          json_build_object(
+            'id', default_checklist_cat.id,
+            'title', default_checklist_cat.title
+          )
+        ) FILTER (WHERE default_checklist_cat.id IS NOT NULL),
+        '[]'
+      ) AS categories
+    FROM default_checklist
+    LEFT JOIN default_checklist_default_checklistcat 
+      ON default_checklist_default_checklistcat.default_checklist_id = default_checklist.id
+    LEFT JOIN default_checklist_cat 
+      ON default_checklist_cat.id = default_checklist_default_checklistcat.default_checklist_cat_id
+    WHERE default_checklist.id = ${checklistId}
+    GROUP BY default_checklist.id, default_checklist.title
+  `;
+
+  return data.length > 0 ? data[0] : null;
+}

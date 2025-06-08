@@ -84,4 +84,47 @@ const ProjectMiddle = [
   },
 ];
 
-export { users, checkList, project, checkListCat , CheckListMiddle, ProjectMiddle };
+const DefaultcheckList = [
+  {
+    id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd8165',
+    title: 'リンクが繋がっているか',
+    status: false,
+  },
+  {
+    id: 'd6e15727-9fe1-4961-8c5b-ea65a9bd8165',
+    title: 'iosの低電力モード時',
+    status: false,
+  },
+  {
+    id: 'd6e15727-9fe1-4961-8c5b-ea44a65d8165',
+    title: 'タクソノミーページのページネーション',
+    status: false,
+  },
+];
+
+const DefaultcheckListCat = [
+  {
+    id: 'd6e65727-9fe1-4961-8c5b-ea44a9bd81ad',
+    title: 'iosチェック',
+  },
+  {
+    id: 'd6e15657-9fe1-4961-8c5b-ea44a9bd81ae',
+    title: 'wp',
+  },
+];
+
+//チェックリスト中間テーブル
+const DefaultCheckListMiddle = [
+  {
+    id: 'd6e15727-9fe1-4961-8c65-ea44a9bd81af',
+    checklist_id: 'd6e15727-9fe1-4961-8c5b-ea44a9bd8165',
+    checklist_cat_id: 'd6e65727-9fe1-4961-8c5b-ea44a9bd81ad',
+  },
+  {
+    id: 'd6e15727-9fe1-4961-655b-ea44a9bd51af',
+    checklist_id: 'd6e15727-9fe1-4961-8c5b-ea44a65d8165',
+    checklist_cat_id: 'd6e15657-9fe1-4961-8c5b-ea44a9bd81ae',
+  },
+];
+
+export { users, checkList, project, checkListCat , CheckListMiddle, ProjectMiddle,DefaultcheckList, DefaultcheckListCat, DefaultCheckListMiddle };
