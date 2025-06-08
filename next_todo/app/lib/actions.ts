@@ -402,3 +402,14 @@ export async function defaultUpdateCheckListStatus(id: string, status: string) {
     throw new Error('Failed to update status');
   }
 }
+
+// デフォルトチェックリストをプロジェクトに追加
+export async function addDefault(projectId: string) {
+  try {
+    
+
+    revalidatePath(`/dashboard/project/${projectId}`);
+  } catch (error) {
+    
+  }
+}
