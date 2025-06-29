@@ -9,6 +9,7 @@ import { choiceCategory } from '@/app/lib/data';
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string; categoryId: string; }>;  }) {
 
   const { id: projectId, categoryId } = await params;
+  console.log('categoryId:', categoryId);
 
   const project = await getProjectById(projectId);
 
@@ -42,9 +43,8 @@ console.log('ProjectDetailPage data:', data);
 
 
       {/* 新規追加フォーム（クライアント側で動く） */}
-      <CheckListForm projectId={projectId}  projectCategories={categories}/>
+      <CheckListForm projectId={projectId}  projectCategories={categories} categoryId={categoryId}/>
 
-      <div className="">カテゴリーページ</div>
       {/* チェックリストの表示（クライアントコンポーネント） */}
       <ClientCheckList data={data} projectId={projectId}/>
     </main>

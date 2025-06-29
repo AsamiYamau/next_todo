@@ -7,13 +7,18 @@ import Category from '@/app/ui/dashboard/project/Category'; // カテゴリー�
 import { getCategoriesByProjectId } from '@/app/lib/data'; // カテゴリー取得関数をインポート
 import Link from 'next/link';
 
+import Image from 'next/image';
+import EditIcon from '@/public/ico/edit.svg';
+import DeleteIcon from '@/public/ico/trash.svg';
+
 
 
 export default function CheckListForm(
-  { projectId, projectCategories }:
+  { projectId, projectCategories, categoryId }:
     {
       projectId: string;
       projectCategories: { id: string; title: string }[];
+      categoryId?: string; // オプションでカテゴリーIDを受け取る
     }) {
   const [title, setTitle] = useState('');
   const [catTitle, catSetTitle] = useState('');
@@ -75,7 +80,7 @@ export default function CheckListForm(
                   <th className='text-left pl-4'>カテゴリー</th>
                 </tr>
                 <tr className='mt-4'>
-                  <td className=''>
+                  <td className='flex'>
                     <input
                       type="text"
                       placeholder="新しい項目"
@@ -93,8 +98,8 @@ export default function CheckListForm(
                             <input
                               type="checkbox"
                               name="category"
-                              value={cat.title}
-                              checked={categories.includes(cat.title)}
+                              value={cat.id}
+                              checked={categories.includes(cat.id)}
                               onChange={handleCategoryChange}
                               className="mr-2"
                             />
@@ -103,16 +108,16 @@ export default function CheckListForm(
                           <span>
                             <Link
                               href={`/dashboard/project/${projectId}/category/${cat.id}/edit`}
-                              className="text-blue-500 hover:underline mr-2"
+                              className="hover:opacity-80 mr-2"
                             >
-                              編集
+                              <Image src={EditIcon} alt="Edit" width={20} height={20} className="inline-block" />
                             </Link>
                             <button
                               type="button"
-                              className="ml-4 text-red-500 hover:underline"
+                              className="hover:opacity-80 cursor-pointer"
                               onClick={() => handleDelete(cat.id)}
                             >
-                              削除
+                              <Image src={DeleteIcon} alt="Delete" width={20} height={20} className="inline-block" />
                             </button>
                           </span>
                         </label>
@@ -160,7 +165,7 @@ export default function CheckListForm(
       {/* カテゴリー絞り込み*/}
       <div className="">
         <div className="">
-          <Category projectCategories={projectCategories}  projectId={projectId}/>
+          <Category projectCategories={projectCategories} projectId={projectId} categoryId={categoryId} />
         </div>
       </div>
     </div>

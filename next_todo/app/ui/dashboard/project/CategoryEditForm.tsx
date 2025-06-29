@@ -19,9 +19,8 @@ export default function CategoryEditForm({category,projectId}: { category: { id:
     e.preventDefault();
     try {
       await updateCategory(category.id, title);
-      alert('カテゴリーを更新しました');
       //projectページへ遷移
-      router.push(`/dashboard/project/${projectId}`);
+      router.push(`/dashboard/project/${projectId}?updated=4`);
     } catch (error) {
       alert('更新に失敗しました');
     }

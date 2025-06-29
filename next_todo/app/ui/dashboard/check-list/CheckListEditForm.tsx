@@ -39,8 +39,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
     e.preventDefault();
     try {
       await updateCheckList(checkListData.id, title, categories.map(cat => cat.id));
-      alert('チェックリストを更新しました');
-      router.push(`/dashboard/project/${ProjectId}`); // ← ここで遷移
+      router.push(`/dashboard/project/${ProjectId}?updated=3`); // ← ここで遷移
     } catch (error) {
       alert('更新に失敗しました');
     }

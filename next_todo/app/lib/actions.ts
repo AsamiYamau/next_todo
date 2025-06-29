@@ -106,19 +106,19 @@ export async function createCheckList(title: string, projectId: string, categori
     const checklistId = checklist.id;
 
     // 2. カテゴリーごとにIDを取得し、中間テーブルに登録
-    for (const categoryName of categories) {
+    for (const categoryId of categories) {
       // 2-1. checklist_catからIDを取得
-      const [cat] = await sql`
-        SELECT id FROM checklist_cat WHERE title = ${categoryName}
-      `;
-      if (!cat) continue; // 万が一見つからなければスキップ
+      // const [cat] = await sql`
+      //   SELECT id FROM checklist_cat WHERE title = ${categoryName}
+      // `;
+      // if (!cat) continue; // 万が一見つからなければスキップ
 
-      const catId = cat.id;
+      // const catId = cat.id;
 
       // 2-2. 中間テーブルに紐付けを追加
       await sql`
         INSERT INTO checklist_checklistcat (checklist_id, checklist_cat_id)
-        VALUES (${checklistId}, ${catId})
+        VALUES (${checklistId}, ${categoryId})
         ON CONFLICT DO NOTHING
       `;
     }
@@ -148,6 +148,9 @@ export async function createCheckListCategory(title: string, projectId: string) 
     `;
 
     revalidatePath(`/dashboard/project/${projectId}`);
+
+     // これを追加！ → 呼び出し元で使えるようになる
+    return { id: categoryId };
   } catch (error) {
     console.error('Error creating checklist category:', error);
     throw new Error('Failed to create checklist category');

@@ -15,7 +15,7 @@ export async function getCheckList(): Promise<CheckListItem[]> {
 
 export async function getProject(): Promise<Project[]> {
   const data = await sql<Project[]>`
-    SELECT id, title, client FROM project
+    SELECT id, title, client FROM project ORDER BY created_at ASC; 
   `;
   return data;
 }

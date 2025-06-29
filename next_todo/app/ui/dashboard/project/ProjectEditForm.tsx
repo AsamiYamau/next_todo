@@ -27,8 +27,7 @@ export default function ProjectEditForm({ project }: { project: Project }) {
     try {
       await updateProject(id, title, client);
       // 登録完了後にリダイレクト
-      router.push('/dashboard/project');
-      alert('プロジェクトを追加しました');
+      router.push('/dashboard/project?updated=2');
     } catch (error) {
       alert('追加に失敗しました');
     }

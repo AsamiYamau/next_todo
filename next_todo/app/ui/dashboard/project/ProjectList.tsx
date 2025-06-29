@@ -4,6 +4,10 @@ import Link from 'next/link';
 import { deleteProject } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
 
+import Image from 'next/image';
+import EditIcon from '@/public/ico/edit.svg'; // public/icons/edit.png に画像があると仮定
+import DeleteIcon from '@/public/ico/trash.svg';
+
 export type Project = {
   id: string;
   title: string;
@@ -13,8 +17,8 @@ export type Project = {
 
 
 export default function ProjectList({ data }: { data: Project[] }) {
-    const router = useRouter();
-    const handleDelete = async (id: string) => {
+  const router = useRouter();
+  const handleDelete = async (id: string) => {
     if (confirm('本当に削除しますか？')) {
       await deleteProject(id);
       router.refresh(); // 一覧を更新
@@ -30,26 +34,29 @@ export default function ProjectList({ data }: { data: Project[] }) {
         >
           <div className="">
             <h2 className="font-bold">
-              <Link href={`/dashboard/project/${project.id}`} className="text-blue-600 hover:underline">
+              <Link href={`/dashboard/project/${project.id}`} className="text-blue-600 underline hover:opacity-80">
                 {project.title}
               </Link>
             </h2>
-            <span>クライアント：{project.client}</span>
+            <span className='text-sm'>クライアント：{project.client}</span>
           </div>
           <div>
             <ul className="edit-list flex">
-              <Link
-                href={`/dashboard/project/${project.id}/edit`}
-                className="text-blue-500 hover:underline"
-              >
-                編集
-              </Link>
+              <li className='mr-2'>
+                <Link
+                  href={`/dashboard/project/${project.id}/edit`}
+                  className="hover:opacity-80"
+                >
+                  <Image src={EditIcon} alt="Edit" width={20} height={20} className="inline-block" />
+                </Link>
+              </li>
               <li>
                 <button
                   onClick={() => handleDelete(project.id)}
-                  className="text-red-500 hover:underline ml-4"
+                  className="hover:opacity-80 cursor-pointer"
                 >
-                  削除
+                  <Image src={DeleteIcon} alt="Delete" width={20} height={20} className="inline-block" />
+
                 </button>
               </li>
             </ul>
