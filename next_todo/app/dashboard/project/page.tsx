@@ -9,14 +9,15 @@ import Arrart from '@/app/ui/dashboard/common/Arrart';
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const data = await getProject();
+  const sp = await searchParams;
   return (
     <main>
       {/* 更新バナー */}
       <div className="text-right">
-        <Arrart updated={searchParams.updated} />
+        <Arrart updated={sp.updated} />
       </div>
       <div className="">
         <h1 className="mb-4 text-xl md:text-2xl font-bold">案件一覧</h1>
