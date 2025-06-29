@@ -11,9 +11,11 @@ export default async function ProjectDetailPage({
   params, searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { id } = await params;
+  const sp = await searchParams;
+
   const data = await getCheckListByProjectId(id);
 
   const project = await getProjectById(id);
@@ -28,7 +30,7 @@ export default async function ProjectDetailPage({
     <main>
       {/* 更新バナー */}
       <div className="text-right">
-        <Arrart updated={searchParams.updated} />
+        <Arrart updated={sp.updated} />
       </div>
       <div className="flex items-center justify-between">
         <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl font-bold`}>

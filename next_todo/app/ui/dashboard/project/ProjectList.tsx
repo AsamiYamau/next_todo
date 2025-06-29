@@ -5,7 +5,7 @@ import { deleteProject } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
 
 import Image from 'next/image';
-import EditIcon from '@/public/ico/edit.svg'; // public/icons/edit.png に画像があると仮定
+import EditIcon from '@/public/ico/edit.svg'; 
 import DeleteIcon from '@/public/ico/trash.svg';
 
 export type Project = {
