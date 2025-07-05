@@ -56,7 +56,7 @@ const totalCount = checkList.length;
                   item.categories.map((category) => (
                     <span
                       key={category.id}
-                      className="ml-2 bg-green-200 px-2 py-1 rounded"
+                      className="ml-2 bg-orange-400 text-white px-2 py-1 rounded"
                     >
                       {category.title}
                     </span>

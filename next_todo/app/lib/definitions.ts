@@ -3,6 +3,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  role: number;
 };
 
 export type CheckListItem = {

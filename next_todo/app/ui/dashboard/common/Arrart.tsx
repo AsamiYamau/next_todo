@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 
 export default function Arrart({ updated }: { updated?: string | string[] }) {
   const [show, setShow] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); 
   const searchParams = useSearchParams();
+
+  // console.log('params', searchParams.toString());
 
   useEffect(() => {
     if (updated) {
@@ -18,8 +21,13 @@ export default function Arrart({ updated }: { updated?: string | string[] }) {
   const handleClose = () => {
     setShow(false);
     // クエリパラメータを消す
+   const params = new URLSearchParams(searchParams.toString());
+    params.delete('updated');
+
+    console.log('pathname', pathname);
+
    // パスだけにリプレイス
-  router.replace('/dashboard/project', { scroll: false });
+  router.replace(pathname, { scroll: false });
   };
 
   return (

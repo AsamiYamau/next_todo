@@ -208,3 +208,4 @@ export async function getDefaultCheckListById(checklistId: string): Promise<Chec
 
   return data.length > 0 ? data[0] : null;
 }
+
