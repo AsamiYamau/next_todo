@@ -11,6 +11,9 @@ import Image from 'next/image';
 import EditIcon from '@/public/ico/edit.svg';
 import DeleteIcon from '@/public/ico/trash.svg';
 
+import { useSession } from 'next-auth/react';
+
+
 
 
 export default function CheckListForm(
@@ -25,6 +28,9 @@ export default function CheckListForm(
   const [categories, setCategories] = useState<string[]>([]);
   const router = useRouter();
 
+const { data: session } = useSession();
+const createdUser = (session?.user as any)?.id; 
+
 
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +43,7 @@ export default function CheckListForm(
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createCheckList(title, projectId, categories);
+    await createCheckList(title, projectId, categories,createdUser ?? '');
     setTitle('');
     setCategories([]);
     router.refresh(); // 一覧を更新！

@@ -5,11 +5,11 @@ import { revalidatePath } from 'next/cache';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-export async function updateCheckListStatus(id: string, status: string) {
+export async function updateCheckListStatus(id: string, status: boolean, LoguinUser: string) {
   try {
     await sql`
       UPDATE checklist
-      SET status = ${status}
+      SET status = ${status},checked_user = ${LoguinUser},checked_at = ${status ? sql`CURRENT_TIMESTAMP` : null}
       WHERE id = ${id}
     `;
   } catch (error) {
@@ -95,12 +95,12 @@ export async function deleteProject(projectId: string) {
 
 
 // チェックリストの新規追加　選択したカテゴリー追加と中間テーブル追加
-export async function createCheckList(title: string, projectId: string, categories: string[]) {
+export async function createCheckList(title: string, projectId: string, categories: string[],createdUser: string) {
   try {
     // 1. checklistに追加
     const [checklist] = await sql`
-      INSERT INTO checklist (title, project_id, status)
-      VALUES (${title}, ${projectId}, false)
+      INSERT INTO checklist (title, project_id, status,created_user)
+      VALUES (${title}, ${projectId}, false, ${createdUser})
       RETURNING id
     `;
     const checklistId = checklist.id;

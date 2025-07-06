@@ -27,6 +27,10 @@ export async function getCheckListByProjectId(projectId: string): Promise<CheckL
       checklist.id,
       checklist.title,
       checklist.status,
+      users.name AS created_user_name,
+      checked_user.name AS checked_user_name,
+      checklist.created_at,
+      checklist.checked_at,
       COALESCE(
         json_agg(
           json_build_object(
@@ -37,15 +41,49 @@ export async function getCheckListByProjectId(projectId: string): Promise<CheckL
         '[]'
       ) AS categories
     FROM checklist
+    LEFT JOIN users
+      ON checklist.created_user = users.id
+    LEFT JOIN users AS checked_user
+      ON checklist.checked_user = checked_user.id
     LEFT JOIN checklist_checklistcat 
       ON checklist_checklistcat.checklist_id = checklist.id
     LEFT JOIN checklist_cat 
       ON checklist_cat.id = checklist_checklistcat.checklist_cat_id
     WHERE checklist.project_id = ${projectId}
-    GROUP BY checklist.id, checklist.title, checklist.status
+    GROUP BY checklist.id, checklist.title, checklist.status, users.name, checked_user.name, checklist.created_at, checklist.checked_at
+    ORDER BY checklist.created_at ASC
   `;
 
-  return data;
+    // ← ここでサーバー側で文字列化して返す（日本時間にするなら要調整）
+const formattedData = data.map(item => ({
+  ...item,
+  created_at: new Date(item.created_at).toLocaleString('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }),
+  checked_at: item.checked_at
+    ? new Date(item.checked_at).toLocaleString('ja-JP', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : null,
+}));
+
+  return formattedData;
+}
+
+//プロジェクト詳細で使用する,チェックしたユーザー名をidから取得
+export async function getCheckedUserNameById(userId: string): Promise<string | null> {
+  const data = await sql<{ name: string }[]>`
+    SELECT name FROM users WHERE id = ${userId}
+  `;
+  return data.length > 0 ? data[0].name : null;
 }
 
 //プロジェクト詳細で使用する、titleとclientを取得
@@ -209,3 +247,10 @@ export async function getDefaultCheckListById(checklistId: string): Promise<Chec
   return data.length > 0 ? data[0] : null;
 }
 
+//ユーザーidから名前を取得
+export async function getUserNameById(userId: string): Promise<string | null> {
+  const data = await sql<{ name: string }[]>`
+    SELECT name FROM users WHERE id = ${userId}
+  `;
+  return data.length > 0 ? data[0].name : null;
+}

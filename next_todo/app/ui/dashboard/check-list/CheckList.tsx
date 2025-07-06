@@ -4,17 +4,25 @@
 import { spawn } from "child_process";
 import Link from 'next/link';
 
+import { useSession } from 'next-auth/react';
+
+
 
 export type CheckListItem = {
   id: string;
   title: string;
   status: boolean;
   categories?: { id: string; title: string }[];
+  created_user?: string; // 追加者のID
+  created_user_name: string; // ← ユーザー名
+  checked_user_name?: string | null; // チェックしたユーザー名
+  created_at?: string; // 作成日時
+  checked_at?: string; // チェック日時
 };
 
 type Props = {
   checkList: CheckListItem[];
-  onStatusChange: (id: string, currentStatus: boolean) => void;
+  onStatusChange: (id: string, currentStatus: boolean,LoguinUser:string,LoguinUserName:string) => void;
   projectId?: string; // プロジェクトIDはオプション
 };
 
@@ -28,9 +36,18 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
     }
   };
   // 完了数
-const doneCount = checkList.filter(item => item.status).length;
-// 全件数
-const totalCount = checkList.length;
+  const doneCount = checkList.filter(item => item.status).length;
+  // 全件数
+  const totalCount = checkList.length;
+
+  console.log('checkList', checkList);
+
+
+  const { data: session } = useSession();
+  const LoguinUser = (session?.user as any)?.id; // セッションからユーザーIDを取得
+  const LoguinUserName = (session?.user as any)?.name; // セッションからユーザー名を取得
+
+
 
 
   return (
@@ -64,14 +81,18 @@ const totalCount = checkList.length;
 
                 )}
               </h2>
-              <span>追加者：山内 2025/05/20</span>
-              <span>確認者：山内 2025/05/21</span>
+              <span className="text-sm mr-10">追加者：
+                <span className="font-bold">{item.created_user_name}</span> {item.created_at}
+              </span>
+              <span className="text-sm">確認者：
+                <span className="font-bold">{item.checked_user_name}</span> {item.checked_at}
+              </span>
             </div>
             <div>
               <input
                 type="checkbox"
                 checked={item.status === true}
-                onChange={() => onStatusChange(item.id, item.status)}
+                onChange={() => onStatusChange(item.id, item.status,LoguinUser, LoguinUserName)}
               />
               <label>{item.status}</label>
               <div className="edit-list flex">

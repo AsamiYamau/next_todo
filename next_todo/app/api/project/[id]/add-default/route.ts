@@ -2,10 +2,22 @@ import { NextResponse } from 'next/server';
 import { createCheckListCategory, createCheckList } from '@/app/lib/actions';
 import { getDefaultCheckListCategory, getDefaultCheckList,getCategoriesByProjectId } from '@/app/lib/data';
 
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/lib/auth';
+
+
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  //ログインユーザー
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+  const userId = (session?.user as any)?.id;  // ← ログイン中ユーザーのIDを取得
+
   // projectIdを取得
   const { id: projectId } = await params;
 
@@ -33,7 +45,8 @@ export async function POST(
   const checkLists = defaultCheckList.map(item => ({
     title: item.title,
     status: item.status,
-    categories: item.categories.map(cat => cat.title) // string[]
+    categories: item.categories.map(cat => cat.title), // string[]
+    createdUser: userId, // 作成者の情報を追加
   }));
   console.log('api:checkLists', checkLists);
 
@@ -46,7 +59,7 @@ export async function POST(
     .map(title => categoryMap.get(title))
     .filter((id): id is string => typeof id === 'string');
     
-    await createCheckList(item.title, projectId, categoryIds);
+    await createCheckList(item.title, projectId, categoryIds,item.createdUser ?? '');
   }
 
   return NextResponse.json({ ok: true });

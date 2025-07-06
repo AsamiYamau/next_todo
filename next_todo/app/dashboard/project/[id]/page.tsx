@@ -7,6 +7,7 @@ import AddDefault from '@/app/ui/dashboard/project/AddDefault';
 import { getCheckListByProjectId, getProjectById, getCategoriesByProjectId } from '@/app/lib/data';
 import Arrart from '@/app/ui/dashboard/common/Arrart';
 
+
 export default async function ProjectDetailPage({
   params, searchParams,
 }: {
@@ -17,6 +18,7 @@ export default async function ProjectDetailPage({
   const sp = await searchParams;
 
   const data = await getCheckListByProjectId(id);
+
 
   const project = await getProjectById(id);
 
