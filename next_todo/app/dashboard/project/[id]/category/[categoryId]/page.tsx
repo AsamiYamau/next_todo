@@ -3,23 +3,29 @@ export const dynamicParams = true;
 import { lusitana } from '@/app/ui/fonts';
 import ClientCheckList from '@/app/ui/dashboard/check-list/ClientCheckList';
 import CheckListForm from '@/app/ui/dashboard/check-list/CheckListForm';
-import { getCheckListByProjectId,getProjectById ,getCategoriesByProjectId} from '@/app/lib/data';
+import { getCheckListByProjectId, getProjectById, getCategoriesByProjectId } from '@/app/lib/data';
 import { choiceCategory } from '@/app/lib/data';
 
-export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string; categoryId: string; }>;  }) {
+export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string; categoryId: string; }>; }) {
 
   const { id: projectId, categoryId } = await params;
-  console.log('categoryId:', categoryId);
 
   const project = await getProjectById(projectId);
 
   const categories = await getCategoriesByProjectId(projectId);
 
-  const data = await choiceCategory(categoryId);
-console.log('ProjectDetailPage data:', data);
+  // const data = await choiceCategory(categoryId);
+
+  const data = (await choiceCategory(categoryId)).map(item => ({
+    ...item,
+    created_user: '',
+    created_user_name: '',
+    checked_user_name: '',
+    created_at: '',
+  }));
 
 
- 
+
   return (
     <main>
       <div className="flex items-center justify-between">
@@ -43,11 +49,10 @@ console.log('ProjectDetailPage data:', data);
 
 
       {/* 新規追加フォーム（クライアント側で動く） */}
-      <CheckListForm projectId={projectId}  projectCategories={categories} categoryId={categoryId}/>
+      <CheckListForm projectId={projectId} projectCategories={categories} categoryId={categoryId} />
 
       {/* チェックリストの表示（クライアントコンポーネント） */}
-      <ClientCheckList data={data} projectId={projectId}/>
+      <ClientCheckList data={data} projectId={projectId} />
     </main>
   );
 }
-  
