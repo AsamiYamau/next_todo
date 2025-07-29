@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   if (existing) return NextResponse.json({ error: 'Email already exists' }, { status: 400 });
 
   const hashed = await bcrypt.hash(password, 10);
-  await createUser(name, email, hashed);
+  await createUser(name, email, hashed, 'free'); // 'free'はプラン名として仮に設定
 
   return NextResponse.json({ success: true });
 }

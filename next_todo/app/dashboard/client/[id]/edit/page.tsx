@@ -5,4 +5,4 @@ export default function ClientEditPage() {
       編集ページ
     </div>
   );
-}
+} 

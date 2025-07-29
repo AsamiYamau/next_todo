@@ -22,10 +22,10 @@ export async function POST(
   const { id: projectId } = await params;
 
   // デフォルトカテゴリーの取得
-  const categories = await getDefaultCheckListCategory();
+  const categories = await getDefaultCheckListCategory(projectId, userId);
 
   // デフォルトチェックリストの取得
-  const defaultCheckList = await getDefaultCheckList();
+  const defaultCheckList = await getDefaultCheckList(projectId, userId);
   console.log('defaultCheckList', defaultCheckList);
 
   // カテゴリーの配列からidを除いた配列を作成
@@ -35,7 +35,7 @@ export async function POST(
   const categoryMap = new Map<string, string>();
   // まずはカテゴリーを追加
   for (const item of categoryTitles) {
-    const category = await createCheckListCategory(item.title, projectId);
+    const category = await createCheckListCategory(item.title, projectId, userId);
     // カテゴリーを追加した後、idを取得してMapに保存
     categoryMap.set(item.title, category.id); // ←戻り値に id が必要！
   }
@@ -59,7 +59,7 @@ export async function POST(
     .map(title => categoryMap.get(title))
     .filter((id): id is string => typeof id === 'string');
     
-    await createCheckList(item.title, projectId, categoryIds,item.createdUser ?? '');
+    await createCheckList(item.title, projectId, categoryIds,item.createdUser ?? '',userId);
   }
 
   return NextResponse.json({ ok: true });
