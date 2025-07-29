@@ -25,6 +25,7 @@ export const authOptions = {
           name: user.name,
           email: user.email,
           role: user.role,
+          plan: user.plan, 
         };
       },
     }),
@@ -40,6 +41,7 @@ callbacks: {
     if (user) {
       token.id = user.id;
       token.role = (user as any).role; // User型にroleが含まれていないため
+      token.plan = (user as any).plan; 
     }
     return token;
   },
@@ -47,6 +49,7 @@ async session({ session, token }: { session: Session; token: JWT }) {
   if (session.user) {
   (session.user as any).id = (token as any).id;
   (session.user as any).role = (token as any).role;
+  (session.user as any).plan = (token as any).plan; 
   }
   return session;
 }

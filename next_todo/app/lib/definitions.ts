@@ -4,6 +4,7 @@ export type User = {
   email: string;
   password: string;
   role: number;
+  plan: number; // ユーザープランを追加
 };
 
 export type CheckListItem = {
