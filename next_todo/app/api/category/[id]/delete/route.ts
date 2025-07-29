@@ -3,9 +3,9 @@ import { deleteCategory } from '@/app/lib/actions';
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string, userId: string }> }
 ): Promise<Response> {
-  const { id } = await params;  // Promise を await する
-  await deleteCategory(id);
+  const { id, userId } = await params;  // Promise を await する
+  await deleteCategory(id, userId);
   return NextResponse.json({ ok: true });
 }

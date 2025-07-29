@@ -14,8 +14,11 @@ export function useCheckList(initialData: CheckListItem[]) {
   }, [initialData]);
 
 
-  const handleStatusChange = async (id: string, currentStatus: boolean,LoguinUser:string,LoguinUserName:string) => {
+  const handleStatusChange = async (id: string, currentStatus: boolean,LoginUser:string| null,LoginUserName:string) => {
     const newStatus = currentStatus === true ? false : true;
+        // newStatus が true のとき、UserId に LoginUser の値をセット、それ以外の場合は null とする
+    const UserId = newStatus ? LoginUser : null;
+
 
     // UIの状態を更新
     setCheckList((prev) =>
@@ -23,9 +26,9 @@ export function useCheckList(initialData: CheckListItem[]) {
     );
 
     //チェックされていたらLoguinUserをセット
-    if (newStatus === true && LoguinUser) {
+    if (newStatus === true && LoginUser) {
       setCheckList((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, checked_user_name: LoguinUserName } : item))
+        prev.map((item) => (item.id === id ? { ...item, checked_user_name: LoginUserName } : item))
       );
     } else {
       setCheckList((prev) =>
@@ -43,18 +46,20 @@ export function useCheckList(initialData: CheckListItem[]) {
           ? {
               ...item,
               status: newStatus,
-              checked_user_name: newStatus ? LoguinUserName : null,
+              checked_user_name: newStatus ? LoginUserName : null,
               checked_at: newStatus ? nowString : null,
             }
           : item
       )
     );
 
+
+
     // APIを叩いてDB更新
     await fetch('/api/update-status', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, status: newStatus, LoguinUser }),
+      body: JSON.stringify({ id, status: newStatus, LoginUser: UserId }),
     });
   };
 

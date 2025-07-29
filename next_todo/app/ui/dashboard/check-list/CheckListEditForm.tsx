@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateCheckList } from '@/app/lib/actions';
+import { useSession } from 'next-auth/react';
 
 
 
@@ -23,9 +24,8 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
   const [title, setTitle] = useState('');
   const [categories, setCategories] = useState<{ id: string; title: string }[]>([]);
   const router = useRouter();
-
-
-
+  const { data: session } = useSession();
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
 
   // 初期値をセット
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateCheckList(checkListData.id, title, categories.map(cat => cat.id));
+      await updateCheckList(checkListData.id, title, categories.map(cat => cat.id), userId);
       router.push(`/dashboard/project/${ProjectId}?updated=3`); // ← ここで遷移
     } catch (error) {
       alert('更新に失敗しました');
@@ -83,7 +83,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
         </div>
       </div>
       <div className="flex justify-center mt-4">
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">追加</button>
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">更新</button>
       </div>
     </form>
   );

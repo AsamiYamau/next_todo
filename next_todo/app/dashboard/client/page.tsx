@@ -1,14 +1,11 @@
 import { lusitana } from '@/app/ui/fonts';
-import { getProject } from '@/app/lib/data';
-import ProjectList from '@/app/ui/dashboard/project/ProjectList';
+import { getClient } from '@/app/lib/data';
+import ClientList from '@/app/ui/dashboard/client/ClientList';
 import Link from 'next/link';
-import CreateProjectForm from '@/app/ui/dashboard/project/CreateProjectForm';
+import CreateClientForm from '@/app/ui/dashboard/client/CreateClientForm';
 import Arrart from '@/app/ui/dashboard/common/Arrart';
-import { getClient } from '@/app/lib/data';// クライアントデータ取得関数
-
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth'; // 認証設定の場所によって調整
-
 
 
 export default async function Page({
@@ -18,11 +15,8 @@ export default async function Page({
 }) {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
-  
-  
-  const data = await getProject(userId);
+  const data = await getClient(userId);
   const sp = await searchParams;
-  const clients = await getClient(userId); // クライアントデータを取得
   return (
     <main>
       {/* 更新バナー */}
@@ -30,10 +24,10 @@ export default async function Page({
         <Arrart updated={sp.updated} />
       </div>
       <div className="">
-        <h1 className="mb-4 text-xl md:text-2xl font-bold">案件一覧</h1>
+        <h1 className="mb-4 text-xl md:text-2xl font-bold">クライアント一覧</h1>
         <div className="border border-2 border-gray-300 p-4 rounded w-[60%] mx-auto mt-8">
-          <div className="font-bold text-blue-500">⚫︎新規案件追加</div>
-          <CreateProjectForm clients={clients} />
+          <div className="font-bold text-blue-500">⚫︎新規クライアント追加</div>
+          <CreateClientForm />
 
         </div>
         {/* <div>
@@ -43,7 +37,7 @@ export default async function Page({
         </div> */}
       </div>
       <div className="mt-20">
-        <ProjectList data={data} />
+        <ClientList data={data} />
       </div>
 
     </main>

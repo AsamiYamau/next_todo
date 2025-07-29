@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createProject } from '@/app/lib/actions';
+import { defaultCreateProject } from '@/app/lib/actions';
 import { useSession } from 'next-auth/react';
 
-export default function CreateProjectForm({ clients }: { clients: { id: string; name: string }[] }) {
+export default function defaultCreateProjectForm({  }: {  }) {
   const [title, setTitle] = useState('');
   const [client, setClient] = useState('');
   const router = useRouter();
@@ -15,9 +15,9 @@ export default function CreateProjectForm({ clients }: { clients: { id: string; 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await createProject(title, client, userId);
+      await defaultCreateProject(title, userId);
       // 登録完了後にリダイレクト
-      router.push('/dashboard/project?updated=1');
+      router.push('/dashboard/default?updated=1');
     } catch (error) {
       alert('追加に失敗しました');
     }
@@ -36,21 +36,6 @@ export default function CreateProjectForm({ clients }: { clients: { id: string; 
               required
               className='mb-4 p-2 border border-gray-300 rounded w-full'
             />
-          </div>
-          <div className="w-[45%]">
-            <div className="font-bold text-blue-500">クライアント名</div>
-            <select
-              value={client}
-              onChange={(e) => setClient(e.target.value)}
-              className='mb-4 p-2 border border-gray-300 rounded w-full'
-            >
-              <option value="">クライアントを選択</option>
-              {clients.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
         <div className="flex justify-center mt-4">

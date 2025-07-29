@@ -1,5 +1,7 @@
 import { getCategoryById } from '@/app/lib/data';
 import CategoryEditForm from '@/app/ui/dashboard/project/CategoryEditForm';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/lib/auth'; 
 
 export default async function Page({
   params,
@@ -7,7 +9,9 @@ export default async function Page({
   params: Promise<{ id: string; categoryId: string }>;
 }) {
   const { id: projectId, categoryId } = await params;
-  const category = await getCategoryById(categoryId);
+  const session = await getServerSession(authOptions);
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const category = await getCategoryById(categoryId,userId);
 
   return (
     <div className="p-4">

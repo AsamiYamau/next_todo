@@ -10,8 +10,9 @@ import clsx from 'clsx';
 const links = [
   { name: 'Home', href: '/dashboard'},
   // { name: '提出前チェックリスト', href: '/dashboard/check-list' },
-  { name: '案件一覧', href: '/dashboard/project' },
-  { name: '案件新規追加', href: '/dashboard/project/create' },
+  { name: '案件管理', href: '/dashboard/project' },
+  // { name: '案件新規追加', href: '/dashboard/project/create' },
+  { name: 'クライアント管理', href: '/dashboard/client' },
   { name: 'デフォルトチェックリスト設定', href: '/dashboard/default' },
 
 

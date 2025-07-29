@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { defaultUpdateCheckList } from '@/app/lib/actions';
+import { useSession } from 'next-auth/react';
 
 
 
@@ -19,11 +20,12 @@ type Category = {
 
 type ProjectID = string;
 
-export default function CheckListEditForm({ checkListData,Category }: { checkListData: checkListData; Category: Category[];}) {
+export default function CheckListEditForm({ checkListData,Category,defaultId }: { checkListData: checkListData; Category: Category[]; defaultId: string }) {
   const [title, setTitle] = useState('');
   const [categories, setCategories] = useState<{ id: string; title: string }[]>([]);
   const router = useRouter();
-
+  const { data: session } = useSession();
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
 
 
 
@@ -38,9 +40,9 @@ export default function CheckListEditForm({ checkListData,Category }: { checkLis
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await defaultUpdateCheckList(checkListData.id, title, categories.map(cat => cat.id));
+      await defaultUpdateCheckList(checkListData.id, title, categories.map(cat => cat.id), userId);
       alert('チェックリストを更新しました');
-      router.push(`/dashboard/default`); // ← ここで遷移
+      router.push(`/dashboard/default/${defaultId}`); // ← ここで遷移
     } catch (error) {
       alert('更新に失敗しました');
     }

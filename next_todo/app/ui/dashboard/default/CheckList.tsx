@@ -3,6 +3,8 @@
 
 import { spawn } from "child_process";
 import Link from 'next/link';
+import { useSession } from "next-auth/react";
+
 
 
 export type CheckListItem = {
@@ -10,17 +12,30 @@ export type CheckListItem = {
   title: string;
   status: boolean;
   categories?: { id: string; title: string }[];
+    created_user?: string; // 追加者のID
+  created_user_name: string; // ← ユーザー名
+  checked_user_name?: string | null; // チェックしたユーザー名
+  created_at?: string; // 作成日時
+  checked_at?: string; // チェック日時
 };
 
 type Props = {
   checkList: CheckListItem[];
   onStatusChange: (id: string, currentStatus: boolean) => void;
+  defaultId?: string; // デフォルトプロジェクトIDはオプション
 };
 
 
-export default function CheckList({ checkList, onStatusChange}: Props) {
+export default function CheckList({ checkList, onStatusChange,defaultId}: Props) {
+  const { data: session } = useSession();
+  const LoguinUser = (session?.user as any)?.id; // セッションからユーザーIDを取得
+  const LoguinUserName = (session?.user as any)?.name; // セッションからユーザー名を取得
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
+
+  console.log('checkList:', checkList);
+  
   // 削除ハンドラ
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string,userId:string) => {
     if (confirm('本当に削除しますか？')) {
       await fetch(`/api/default/checklist/${id}/delete`, { method: 'DELETE' });
       window.location.reload();
@@ -50,19 +65,12 @@ export default function CheckList({ checkList, onStatusChange}: Props) {
 
               )}
             </h2>
-            <span>追加者：山内 2025/05/20</span>
-            <span>確認者：山内 2025/05/21</span>
+            <span>追加者：{item.created_user_name}</span> {item.created_at}
           </div>
           <div>
-            <input
-              type="checkbox"
-              checked={item.status === true}
-              onChange={() => onStatusChange(item.id, item.status)}
-            />
-            <label>{item.status}</label>
             <div className="edit-list flex">
               <Link
-                href={`/dashboard/default/check-list/${item.id}/edit`}
+                href={`/dashboard/default/${defaultId}/check-list/${item.id}/edit`}
                 className="text-blue-500 hover:underline"
               >
                 編集
@@ -70,7 +78,7 @@ export default function CheckList({ checkList, onStatusChange}: Props) {
               <button
                 type="button"
                 className="ml-4 text-red-500 hover:underline"
-                onClick={() => handleDelete(item.id)}
+                onClick={() => handleDelete(item.id, userId)}
               >
                 削除
               </button>

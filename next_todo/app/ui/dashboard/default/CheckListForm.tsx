@@ -9,7 +9,14 @@ import Link from 'next/link';
 
 
 
-export default function CheckListForm({defaultCategories}: {defaultCategories: { id: string; title: string }[]}) {
+
+export default function CheckListForm(
+  {defaultCategories, defaultId, userId}: 
+  {
+    defaultCategories: { id: string; title: string }[]
+    defaultId: string; // デフォルトチェックリストID
+    userId: string; // ユーザーID
+  }) {
   const [title, setTitle] = useState('');
   const [catTitle, catSetTitle] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
@@ -28,7 +35,7 @@ export default function CheckListForm({defaultCategories}: {defaultCategories: {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await defaultCreateCheckList(title, categories);
+    await defaultCreateCheckList(title, categories, defaultId, userId); 
     setTitle('');
     setCategories([]);
     router.refresh(); // 一覧を更新！
@@ -37,12 +44,12 @@ export default function CheckListForm({defaultCategories}: {defaultCategories: {
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await defaultCreateCheckListCategory(catTitle);
+    await defaultCreateCheckListCategory(catTitle,defaultId, userId);
     catSetTitle(''); // 入力フィールドをクリア
     router.refresh(); // 一覧を更新！
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string,userId:string) => {
     if (confirm('本当に削除しますか？')) {
       try {
         await fetch(`/api/default/category/${id}/delete`, {
@@ -98,7 +105,7 @@ export default function CheckListForm({defaultCategories}: {defaultCategories: {
                           </span>
                           <span>
                             <Link
-                              href={`/dashboard/default/category/${cat.id}/edit`}
+                              href={`/dashboard/default/${defaultId}/category/${cat.id}/edit`}
                               className="text-blue-500 hover:underline mr-2"
                             >
                               編集
@@ -106,7 +113,7 @@ export default function CheckListForm({defaultCategories}: {defaultCategories: {
                             <button
                               type="button"
                               className="ml-4 text-red-500 hover:underline"
-                              onClick={() => handleDelete(cat.id)}
+                              onClick={() => handleDelete(cat.id, userId)}
                             >
                               削除
                             </button>

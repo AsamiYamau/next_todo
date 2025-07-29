@@ -3,6 +3,9 @@
 
 import { spawn } from "child_process";
 import Link from 'next/link';
+import Image from 'next/image';
+import EditIcon from '@/public/ico/edit.svg';
+import DeleteIcon from '@/public/ico/trash.svg';
 
 import { useSession } from 'next-auth/react';
 
@@ -29,7 +32,7 @@ type Props = {
 
 export default function CheckList({ checkList, onStatusChange, projectId }: Props) {
   // 削除ハンドラ
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, userId: string) => {
     if (confirm('本当に削除しますか？')) {
       await fetch(`/api/checklist/${id}/delete`, { method: 'DELETE' });
       window.location.reload();
@@ -40,12 +43,12 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
   // 全件数
   const totalCount = checkList.length;
 
-  console.log('checkList', checkList);
 
 
   const { data: session } = useSession();
   const LoguinUser = (session?.user as any)?.id; // セッションからユーザーIDを取得
   const LoguinUserName = (session?.user as any)?.name; // セッションからユーザー名を取得
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
 
 
 
@@ -100,14 +103,14 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
                   href={`/dashboard/project/${projectId}/check-list/${item.id}/edit`}
                   className="text-blue-500 hover:underline"
                 >
-                  編集
+                  <Image src={EditIcon} alt="Edit" width={20} height={20} className="inline-block" />
                 </Link>
                 <button
                   type="button"
                   className="ml-4 text-red-500 hover:underline"
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.id, userId)}
                 >
-                  削除
+                  <Image src={DeleteIcon} alt="Delete" width={20} height={20} className="inline-block" />
                 </button>
               </div>
             </div>

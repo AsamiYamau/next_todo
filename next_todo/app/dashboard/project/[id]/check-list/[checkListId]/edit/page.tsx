@@ -1,16 +1,19 @@
 import CheckListEditForm from '@/app/ui/dashboard/check-list/CheckListEditForm';
 import { getCheckListById,getProjectIdByCheckListId,getCategoriesByProjectId } from '@/app/lib/data';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/lib/auth';
 
 export default async function CheckListEditPage({ params }: { params: Promise<{ checkListId: string }> }) {
 
   const { checkListId } = await params; // Promise を await する
+  const session = await getServerSession(authOptions);
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
 
-
-  const checkListData = await getCheckListById(checkListId);
+  const checkListData = await getCheckListById(checkListId, userId);
   // project_idを取得
-  const projectId = await getProjectIdByCheckListId(checkListId);
+  const projectId = await getProjectIdByCheckListId(checkListId, userId);
   // プロジェクトのカテゴリーを取得
-  const projectCategories = await getCategoriesByProjectId(projectId!);
+  const projectCategories = await getCategoriesByProjectId(projectId!, userId);
 
 
   return (

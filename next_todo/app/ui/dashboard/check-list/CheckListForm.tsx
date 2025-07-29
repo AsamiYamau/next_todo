@@ -30,6 +30,7 @@ export default function CheckListForm(
 
 const { data: session } = useSession();
 const createdUser = (session?.user as any)?.id; 
+const userId = (session?.user as any)?.id; // ユーザーIDを取得
 
 
 
@@ -43,7 +44,7 @@ const createdUser = (session?.user as any)?.id;
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createCheckList(title, projectId, categories,createdUser ?? '');
+    await createCheckList(title, projectId, categories,createdUser, userId);
     setTitle('');
     setCategories([]);
     router.refresh(); // 一覧を更新！
@@ -52,12 +53,12 @@ const createdUser = (session?.user as any)?.id;
 
   const handleCategorySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createCheckListCategory(catTitle, projectId);
+    await createCheckListCategory(catTitle, projectId, userId);
     catSetTitle(''); // 入力フィールドをクリア
     router.refresh(); // 一覧を更新！
   }
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string,userId: string) => {
     if (confirm('本当に削除しますか？')) {
       try {
         await fetch(`/api/category/${id}/delete`, {
@@ -121,7 +122,7 @@ const createdUser = (session?.user as any)?.id;
                             <button
                               type="button"
                               className="hover:opacity-80 cursor-pointer"
-                              onClick={() => handleDelete(cat.id)}
+                              onClick={() => handleDelete(cat.id,userId)}
                             >
                               <Image src={DeleteIcon} alt="Delete" width={20} height={20} className="inline-block" />
                             </button>
@@ -168,12 +169,7 @@ const createdUser = (session?.user as any)?.id;
           </form>
         </div>
       </div>
-      {/* カテゴリー絞り込み*/}
-      <div className="">
-        <div className="">
-          <Category projectCategories={projectCategories} projectId={projectId} categoryId={categoryId} />
-        </div>
-      </div>
+
     </div>
   );
 }

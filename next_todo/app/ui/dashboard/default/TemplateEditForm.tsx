@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateProject } from '@/app/lib/actions';
+import { defaultUpdateProject } from '@/app/lib/actions';
 import { useSession } from 'next-auth/react';
 
 type Project = {
@@ -11,7 +11,7 @@ type Project = {
   client: string;
 };
 
-export default function ProjectEditForm({ project, clients }: { project: Project; clients: any[] }) {
+export default function ProjectEditForm({ project}: { project: Project; }) {
   const [title, setTitle] = useState('');
   const [client, setClient] = useState('');
   const router = useRouter();
@@ -27,9 +27,9 @@ export default function ProjectEditForm({ project, clients }: { project: Project
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await updateProject(id, title, client, userId);
+      await defaultUpdateProject(id, title, userId);
       // 登録完了後にリダイレクト
-      router.push('/dashboard/project?updated=2');
+      router.push('/dashboard/default?updated=2');
     } catch (error) {
       alert('追加に失敗しました');
     }
@@ -48,21 +48,6 @@ export default function ProjectEditForm({ project, clients }: { project: Project
             required
             className='mb-4 p-2 border border-gray-300 rounded w-full'
           />
-        </div>
-        <div className="w-[45%]">
-          <div className="font-bold text-blue-500">クライアント名</div>
-          <select
-            value={client}
-            onChange={(e) => setClient(e.target.value)}
-            className='mb-4 p-2 border border-gray-300 rounded w-full'
-          >
-            <option value="">クライアントを選択</option>
-            {clients.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
       <div className="flex justify-center mt-4">

@@ -1,56 +1,46 @@
 'use client';
 
 import Link from 'next/link';
-import { deleteProject } from '@/app/lib/actions';
+import { deleteClient } from '@/app/lib/actions';
 import { useRouter } from 'next/navigation';
 
 import Image from 'next/image';
-import EditIcon from '@/public/ico/edit.svg'; 
+import EditIcon from '@/public/ico/edit.svg';
 import DeleteIcon from '@/public/ico/trash.svg';
 
-import { useSession } from 'next-auth/react';
-
-export type Project = {
+export type Client = {
   id: string;
-  title: string;
-  client: string;
-  client_id?: string; // クライアントIDをオプションとして追加
-  client_name?: string; // クライアント名をオプションとして追加
+  name: string;
 };
 
 
 
-export default function ProjectList({ data }: { data: Project[] }) {
-  const { data: session } = useSession();
-  const userId = (session?.user as any)?.id; // ユーザーIDを取得
+export default function ClientList({ data }: { data: Client[] }) {
   const router = useRouter();
-  const handleDelete = async (id: string, userId: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm('本当に削除しますか？')) {
-      await deleteProject(id, userId);
+      await deleteClient(id);
       router.refresh(); // 一覧を更新
     }
   };
 
   return (
     <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {data.map((project) => (
+      {data.map((client) => (
         <li
           className="flex items-start justify-between bg-sky-100 p-4 mt-4 border-2 border-blue-200 rounded"
-          key={project.id}
+          key={client.id}
         >
           <div className="w-3/4">
             <h2 className="font-bold">
-              <Link href={`/dashboard/project/${project.id}`} className="text-blue-600 underline hover:opacity-80">
-                {project.title}
-              </Link>
+              {client.name}
             </h2>
-            <span className='text-sm'>クライアント：{project.client_name}</span>
           </div>
           <div className='w-1/4 mt-auto'>
             <ul className="edit-list flex justify-end">
               <li className='mr-2'>
                 <Link
-                  href={`/dashboard/project/${project.id}/edit`}
+                  href={`/dashboard/client/${client.id}/edit`}
                   className="hover:opacity-80"
                 >
                   <Image src={EditIcon} alt="Edit" width={20} height={20} className="inline-block" />
@@ -58,7 +48,7 @@ export default function ProjectList({ data }: { data: Project[] }) {
               </li>
               <li>
                 <button
-                  onClick={() => handleDelete(project.id, userId)}
+                  onClick={() => handleDelete(client.id)}
                   className="hover:opacity-80 cursor-pointer"
                 >
                   <Image src={DeleteIcon} alt="Delete" width={20} height={20} className="inline-block" />

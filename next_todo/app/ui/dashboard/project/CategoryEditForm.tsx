@@ -3,13 +3,15 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateCategory } from '@/app/lib/actions';
+import { useSession } from 'next-auth/react';
 
 type category = { id: string; title: string };
 
 export default function CategoryEditForm({category,projectId}: { category: { id: string; title: string }; projectId: string }) {
   const [title, setTitle] = useState(category.title);
   const router = useRouter();
-
+  const { data: session } = useSession();
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
 
   useEffect(() => {
     setTitle(category.title);
@@ -18,7 +20,7 @@ export default function CategoryEditForm({category,projectId}: { category: { id:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateCategory(category.id, title);
+      await updateCategory(category.id, title,userId);
       //projectページへ遷移
       router.push(`/dashboard/project/${projectId}?updated=4`);
     } catch (error) {

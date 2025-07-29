@@ -30,9 +30,9 @@ export async function updateUserRole(id: string, role: string): Promise<void> {
   `;
 }
 
-export async function createUser(name: string, email: string, hashedPassword: string): Promise<void> {
+export async function createUser(name: string, email: string, hashedPassword: string, plan: string): Promise<void> {
   await sql`
-    INSERT INTO users (name, email, password)
-    VALUES (${name}, ${email}, ${hashedPassword})
+    INSERT INTO users (name, email, password, plan)
+    VALUES (${name}, ${email}, ${hashedPassword}, ${plan})
   `;
 }

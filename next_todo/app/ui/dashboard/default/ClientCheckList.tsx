@@ -5,9 +5,9 @@ import { CheckListItem } from '@/app/lib/definitions';
 import CheckList from '@/app/ui/dashboard/default/CheckList';
 import CheckListForm from '@/app/ui/dashboard/check-list/CheckListForm';
 
-export default function ClientCheckList({ data }: 
-  { data: CheckListItem[]; } ) {
+export default function ClientCheckList({ data, defaultId }: 
+  { data: CheckListItem[]; defaultId:string } ) {
   const { checkList, handleStatusChange } = useCheckList(data);
 
-  return <CheckList checkList={checkList} onStatusChange={handleStatusChange} />;
+  return <CheckList checkList={checkList} onStatusChange={handleStatusChange} defaultId={defaultId} />;
 }

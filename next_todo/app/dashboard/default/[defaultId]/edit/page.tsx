@@ -1,17 +1,16 @@
 
-import ProjectEditForm from '@/app/ui/dashboard/project/ProjectEditForm';
-import { getProjectById } from '@/app/lib/data';
+import TemplateEditForm from '@/app/ui/dashboard/default/TemplateEditForm';
+import { getDefaultById } from '@/app/lib/data';
 //sessionの取得
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth'; 
 import { getClient } from '@/app/lib/data';// クライアントデータ取得関数
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params; // Promise を await する
+export default async function Page({ params }: { params: Promise<{ defaultId: string }> }) {
+  const { defaultId } = await params; // Promise を await する
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
-    const project = await getProjectById(id, userId);
-  const clients = await getClient(userId); // クライアントデータを取得
+    const project = await getDefaultById(defaultId, userId);
 
 
   return (
@@ -21,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       </div>
       {/* ここにプロジェクト編集フォームを追加 */}
       <div className="border border-2 border-gray-300 p-4 rounded w-[60%] mx-auto mt-8">
-        <ProjectEditForm project={project!} clients={clients} />
+        <TemplateEditForm project={project!}/>
       </div>
 
     </main>
