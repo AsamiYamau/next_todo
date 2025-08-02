@@ -41,7 +41,7 @@ export default async function Page({
         {/* クライアント選択 */}
         <div className="mt-20">
           <div className="">
-            <Client clients={clients} projectId={id} />
+            <Client clients={clients} />
           </div>
         </div>
       <div className="mt-10">
