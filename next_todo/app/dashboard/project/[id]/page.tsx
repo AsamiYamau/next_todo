@@ -4,7 +4,7 @@ import { lusitana } from '@/app/ui/fonts';
 import ClientCheckList from '@/app/ui/dashboard/check-list/ClientCheckList';
 import CheckListForm from '@/app/ui/dashboard/check-list/CheckListForm';
 import AddDefault from '@/app/ui/dashboard/project/AddDefault';
-import { getCheckListByProjectId, getProjectById, getCategoriesByProjectId } from '@/app/lib/data';
+import { getCheckListByProjectId, getProjectById, getCategoriesByProjectId,getDefaultTemplate } from '@/app/lib/data';
 import Arrart from '@/app/ui/dashboard/common/Arrart';
 import Category from '@/app/ui/dashboard/project/Category'; // カテゴリーコンポーネントをインポート
 import { getServerSession } from 'next-auth';
@@ -29,7 +29,9 @@ export default async function ProjectDetailPage({
 
   const categories = await getCategoriesByProjectId(id, userId);
 
-  console.log('ProjectDetailPage data:', data);
+  const defaultTemplate = await getDefaultTemplate(userId);
+console.log(defaultTemplate);
+  
 
 
 
@@ -43,7 +45,7 @@ export default async function ProjectDetailPage({
         <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl font-bold`}>
           提出前チェックリスト
         </h1>
-        <AddDefault projectId={id} />
+        <AddDefault projectId={id} defaultTemplate={defaultTemplate} />
       </div>
 
       <div className="flex items-center justify-between p-4 mt-4">

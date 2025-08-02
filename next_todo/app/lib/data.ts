@@ -416,3 +416,20 @@ export async function getClient(userId: string): Promise<Client[]> {
   `;
   return data;
 }
+//クライアントidから、紐づくプロジェクトを取得
+export async function getProjectByClientId(clientId: string, userId: string): Promise<Project[]> {
+
+    const data = await sql<Project[]>`
+        SELECT
+      project.id,
+      project.title,
+      client.id AS client_id,
+      client.name AS client_name
+    FROM project
+    JOIN client_project ON project.id = client_project.project_id
+    JOIN client ON client_project.client_id = client.id
+    WHERE client_project.client_id = ${clientId} AND project.user_id = ${userId}
+    ORDER BY project.created_at ASC;
+  `;
+  return data;
+}

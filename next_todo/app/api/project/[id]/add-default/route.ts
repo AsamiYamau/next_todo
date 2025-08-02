@@ -8,8 +8,14 @@ import { authOptions } from '@/app/lib/auth';
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: 
+  { params: Promise<{ id: string }> }
 ) {
+
+   // リクエストボディを取得
+  const body = await req.json();
+  const { defaultProjectId } = body;
+
   //ログインユーザー
   const session = await getServerSession(authOptions);
 
@@ -22,10 +28,10 @@ export async function POST(
   const { id: projectId } = await params;
 
   // デフォルトカテゴリーの取得
-  const categories = await getDefaultCheckListCategory(projectId, userId);
+  const categories = await getDefaultCheckListCategory(defaultProjectId, userId);
 
   // デフォルトチェックリストの取得
-  const defaultCheckList = await getDefaultCheckList(projectId, userId);
+  const defaultCheckList = await getDefaultCheckList(defaultProjectId, userId);
   console.log('defaultCheckList', defaultCheckList);
 
   // カテゴリーの配列からidを除いた配列を作成

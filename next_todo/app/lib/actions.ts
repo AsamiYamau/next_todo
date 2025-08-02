@@ -492,16 +492,6 @@ export async function defaultUpdateCheckListStatus(id: string, status: string) {
   }
 }
 
-// デフォルトチェックリストをプロジェクトに追加
-export async function addDefault(projectId: string) {
-  try {
-    
-
-    revalidatePath(`/dashboard/project/${projectId}`);
-  } catch (error) {
-    
-  }
-}
 
 //クライアント新規追加
 export async function createClient(name: string, userId: string) {
