@@ -12,6 +12,7 @@ export default function CategoryEditForm({category,projectId}: { category: { id:
   const router = useRouter();
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
   useEffect(() => {
     setTitle(category.title);
@@ -20,7 +21,7 @@ export default function CategoryEditForm({category,projectId}: { category: { id:
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateCategory(category.id, title,userId);
+      await updateCategory(category.id, title,userId, teamId); // カテゴリーを更新
       //projectページへ遷移
       router.push(`/dashboard/project/${projectId}?updated=4`);
     } catch (error) {

@@ -13,7 +13,7 @@ export async function getCheckList(): Promise<CheckListItem[]> {
   return data;
 }
 
-export async function getProject(userId: string): Promise<Project[]> {
+export async function getProject(userId: string,teamId:string): Promise<Project[]> {
   const data = await sql<Project[]>`
         SELECT
       project.id,
@@ -23,14 +23,14 @@ export async function getProject(userId: string): Promise<Project[]> {
     FROM project
     JOIN client_project ON project.id = client_project.project_id
     JOIN client ON client_project.client_id = client.id
-    WHERE project.user_id = ${userId}
+    WHERE project.user_id = ${userId} OR project.team_id = ${teamId}
     ORDER BY project.created_at ASC;
   `;
   return data;
 }
 
 //プロジェクト詳細で使用する、projectのidと紐づいたchecklistを取得
-export async function getCheckListByProjectId(projectId: string, userId: string): Promise<CheckListItemWithCategories[]> {
+export async function getCheckListByProjectId(projectId: string, userId: string,teamId:string): Promise<CheckListItemWithCategories[]> {
   const data = await sql<CheckListItemWithCategories[]>`
     SELECT
       checklist.id,
@@ -58,7 +58,7 @@ export async function getCheckListByProjectId(projectId: string, userId: string)
       ON checklist_checklistcat.checklist_id = checklist.id
     LEFT JOIN checklist_cat 
       ON checklist_cat.id = checklist_checklistcat.checklist_cat_id
-    WHERE checklist.project_id = ${projectId} AND checklist.user_id = ${userId}
+    WHERE checklist.project_id = ${projectId} AND (checklist.user_id = ${userId} OR checklist.team_id = ${teamId})
     GROUP BY checklist.id, checklist.title, checklist.status, users.name, checked_user.name, checklist.created_at, checklist.checked_at
     ORDER BY checklist.created_at ASC
   `;
@@ -88,15 +88,15 @@ const formattedData = data.map(item => ({
 }
 
 //プロジェクト詳細で使用する,チェックしたユーザー名をidから取得
-export async function getCheckedUserNameById(userId: string): Promise<string | null> {
+export async function getCheckedUserNameById(userId: string, teamId:string): Promise<string | null> {
   const data = await sql<{ name: string }[]>`
-    SELECT name FROM users WHERE id = ${userId}
+    SELECT name FROM users WHERE id = ${userId} OR team_id = ${teamId}
   `;
   return data.length > 0 ? data[0].name : null;
 }
 
 //プロジェクト詳細で使用する、titleとclientを取得
-export async function getProjectById(projectId: string, userId: string): Promise<Project | null> {
+export async function getProjectById(projectId: string, userId: string, teamId:string): Promise<Project | null> {
   const data = await sql<Project[]>`
     SELECT 
     project.id, 
@@ -106,27 +106,27 @@ export async function getProjectById(projectId: string, userId: string): Promise
     FROM project
     JOIN client_project ON project.id = client_project.project_id
     JOIN client ON client_project.client_id = client.id
-    WHERE project.id = ${projectId} AND project.user_id = ${userId} AND client.user_id = ${userId}
+    WHERE project.id = ${projectId} AND (project.user_id = ${userId} OR client.user_id = ${userId} OR project.team_id = ${teamId})
   `;
   return data.length > 0 ? data[0] : null;
 }
 
 //プロジェクト詳細で使用する、projectと紐づいたカテゴリーを中間テーブルproject_checklistcatから取得
 
-export async function getCategoriesByProjectId(projectId: string, userId: string): Promise<{ id: string; title: string }[]> {
+export async function getCategoriesByProjectId(projectId: string, userId: string,teamId:string): Promise<{ id: string; title: string }[]> {
   const data = await sql<{ id: string; title: string }[]>`
     SELECT checklist_cat.id, checklist_cat.title
     FROM checklist_cat
     JOIN project_checklistcat ON project_checklistcat.checklist_cat_id = checklist_cat.id
     JOIN project ON project.id = project_checklistcat.project_id
     WHERE project_checklistcat.project_id = ${projectId}
-      AND project.user_id = ${userId}
+      AND (project.user_id = ${userId} OR project.team_id = ${teamId})
   `;
   return data;
 }
 
 // checklist編集で使用する、checklistのtitleとカテゴリーを取得
-export async function getCheckListById(checklistId: string, userId: string): Promise<CheckListItemWithCategories | null> {
+export async function getCheckListById(checklistId: string, userId: string,teamId:string): Promise<CheckListItemWithCategories | null> {
   const data = await sql<CheckListItemWithCategories[]>`
     SELECT
       checklist.id,
@@ -145,7 +145,7 @@ export async function getCheckListById(checklistId: string, userId: string): Pro
       ON checklist_checklistcat.checklist_id = checklist.id
     LEFT JOIN checklist_cat 
       ON checklist_cat.id = checklist_checklistcat.checklist_cat_id
-    WHERE checklist.id = ${checklistId} AND checklist.user_id = ${userId}
+    WHERE checklist.id = ${checklistId} AND (checklist.user_id = ${userId} OR checklist.team_id = ${teamId})
     GROUP BY checklist.id, checklist.title
   `;
 
@@ -153,16 +153,16 @@ export async function getCheckListById(checklistId: string, userId: string): Pro
 }
 
 //親のproject_idを取得
-export async function getProjectIdByCheckListId(checklistId: string, userId: string): Promise<string | null> {
+export async function getProjectIdByCheckListId(checklistId: string, userId: string,teamId:string): Promise<string | null> {
   const data = await sql<{ project_id: string }[]>`
-    SELECT project_id FROM checklist WHERE id = ${checklistId} AND user_id = ${userId}
+    SELECT project_id FROM checklist WHERE id = ${checklistId} AND (user_id = ${userId} OR team_id = ${teamId})
   `;
   return data.length > 0 ? data[0].project_id : null;
 }
 //一つのカテゴリーのtitleを取得
-export async function getCategoryById(categoryId: string,userId: string): Promise<{ id: string; title: string } | null> {
+export async function getCategoryById(categoryId: string,userId: string, teamId:string): Promise<{ id: string; title: string} | null> {
   const data = await sql<{ id: string; title: string }[]>`
-    SELECT id, title FROM checklist_cat WHERE id = ${categoryId} AND user_id = ${userId}
+    SELECT id, title FROM checklist_cat WHERE id = ${categoryId} AND (user_id = ${userId} OR team_id = ${teamId})
   `;
   return data.length > 0 ? data[0] : null;
 }
@@ -274,30 +274,30 @@ const formattedData2 = data.map(item => ({
 }
 
 //デフォルトテンプレート取得
-export async function getDefaultTemplate(userId: string): Promise<Project[]> {
+export async function getDefaultTemplate(userId: string,teamId:string): Promise<Project[]> {
   const data = await sql<Project[]>`
         SELECT
       default_project.id,
       default_project.title
     FROM default_project
-    WHERE default_project.user_id = ${userId}
+    WHERE default_project.user_id = ${userId} OR default_project.team_id = ${teamId}
     ORDER BY default_project.created_at ASC;
   `;
   return data;
 }
 //デフォルト詳細で使用する、titleを取得
-export async function getDefaultById(defaultId: string, userId: string): Promise<Project | null> {
+export async function getDefaultById(defaultId: string, userId: string,teamId:string): Promise<Project | null> {
   const data = await sql<Project[]>`
     SELECT 
     default_project.id, 
     default_project.title
     FROM default_project
-    WHERE default_project.id = ${defaultId} AND default_project.user_id = ${userId}
+    WHERE default_project.id = ${defaultId} AND (default_project.user_id = ${userId} OR default_project.team_id = ${teamId})
   `;
   return data.length > 0 ? data[0] : null;
 }
 //デフォルトチェックリストを取得
-export async function getDefaultCheckList(templateId:string,userId:string): Promise<DefaultCheckListItemWithCategories[]> {
+export async function getDefaultCheckList(templateId:string,userId:string,teamId:string): Promise<DefaultCheckListItemWithCategories[]> {
   const data = await sql<DefaultCheckListItemWithCategories[]>`
     SELECT
       default_checklist.id,
@@ -320,7 +320,7 @@ export async function getDefaultCheckList(templateId:string,userId:string): Prom
       ON default_checklist_default_checklistcat.default_checklist_id = default_checklist.id
     LEFT JOIN default_checklist_cat 
       ON default_checklist_cat.id = default_checklist_default_checklistcat.default_checklist_cat_id
-    WHERE default_checklist.default_project_id = ${templateId} AND default_checklist.user_id = ${userId}
+    WHERE default_checklist.default_project_id = ${templateId} AND (default_checklist.user_id = ${userId} OR default_checklist.team_id = ${teamId})
     GROUP BY default_checklist.id, default_checklist.title, users.name, default_checklist.created_at
     ORDER BY default_checklist.created_at ASC
   `;
@@ -340,7 +340,7 @@ const formattedData = data.map(item => ({
   return formattedData;
 }
 //デフォルトチェックリストのカテゴリーを取得
-export async function getDefaultCheckListCategory(templateId:string,userId:string): Promise<{ id: string; title: string }[]> {
+export async function getDefaultCheckListCategory(templateId:string,userId:string,teamId:string): Promise<{ id: string; title: string }[]> {
   const data = await sql<{ id: string; title: string }[]>`
     SELECT 
     default_checklist_cat.id, 
@@ -350,7 +350,7 @@ export async function getDefaultCheckListCategory(templateId:string,userId:strin
       ON default_project_default_checklistcat.default_checklist_cat_id = default_checklist_cat.id
     JOIN default_project 
       ON default_project_id = default_project_default_checklistcat.default_project_id
-    WHERE default_project_default_checklistcat.default_project_id = ${templateId} AND default_project.user_id = ${userId}
+    WHERE default_project_default_checklistcat.default_project_id = ${templateId} AND (default_project.user_id = ${userId} OR default_project.team_id = ${teamId})
     ORDER BY default_checklist_cat.created_at ASC
   `;
   return data;
@@ -358,15 +358,15 @@ export async function getDefaultCheckListCategory(templateId:string,userId:strin
 
 
 //デフォルト　１つのカテゴリーのtitleを取得
-export async function getDefaultCategoryById(categoryId: string,userId:string): Promise<{ id: string; title: string } | null> {
+export async function getDefaultCategoryById(categoryId: string,userId:string,teamId:string): Promise<{ id: string; title: string } | null> {
   const data = await sql<{ id: string; title: string }[]>`
-    SELECT id, title FROM default_checklist_cat WHERE id = ${categoryId}
+    SELECT id, title FROM default_checklist_cat WHERE id = ${categoryId} AND (user_id = ${userId} OR team_id = ${teamId})
   `;
   return data.length > 0 ? data[0] : null;
 }
 
 // checklist編集で使用する、checklistのtitleとカテゴリーを取得
-export async function getDefaultCheckListById(checklistId: string,userId:string): Promise<CheckListItemWithCategories | null> {
+export async function getDefaultCheckListById(checklistId: string,userId:string,teamId:string): Promise<CheckListItemWithCategories | null> {
   const data = await sql<CheckListItemWithCategories[]>`
     SELECT
       default_checklist.id,
@@ -385,16 +385,16 @@ export async function getDefaultCheckListById(checklistId: string,userId:string)
       ON default_checklist_default_checklistcat.default_checklist_id = default_checklist.id
     LEFT JOIN default_checklist_cat 
       ON default_checklist_cat.id = default_checklist_default_checklistcat.default_checklist_cat_id
-    WHERE default_checklist.id = ${checklistId} AND default_checklist.user_id = ${userId}
+    WHERE default_checklist.id = ${checklistId} AND (default_checklist.user_id = ${userId} OR default_checklist.team_id = ${teamId})
     GROUP BY default_checklist.id, default_checklist.title
   `;
 
   return data.length > 0 ? data[0] : null;
 }
 //親のdefaultidを取得
-export async function getDefaultIdByCheckListId(checklistId: string, userId: string): Promise<string | null> {
+export async function getDefaultIdByCheckListId(checklistId: string, userId: string,teamId:string): Promise<string | null> {
   const data = await sql<{ default_project_id: string }[]>`
-    SELECT default_project_id FROM default_checklist WHERE id = ${checklistId} AND user_id = ${userId}
+    SELECT default_project_id FROM default_checklist WHERE id = ${checklistId} AND (user_id = ${userId} OR team_id = ${teamId})
   `;
   return data.length > 0 ? data[0].default_project_id : null;
 }
@@ -408,16 +408,16 @@ export async function getUserNameById(userId: string): Promise<string | null> {
 }
 
 //クライアント情報の取得
-export async function getClient(userId: string): Promise<Client[]> {
+export async function getClient(userId: string,teamId:string): Promise<Client[]> {
   const data = await sql<Client[]>`
     SELECT id, name FROM client 
-    WHERE user_id = ${userId}
+    WHERE user_id = ${userId} OR team_id = ${teamId}
     ORDER BY created_at ASC; 
   `;
   return data;
 }
 //クライアントidから、紐づくプロジェクトを取得
-export async function getProjectByClientId(clientId: string, userId: string): Promise<Project[]> {
+export async function getProjectByClientId(clientId: string, userId: string,teamId:string): Promise<Project[]> {
 
     const data = await sql<Project[]>`
         SELECT
@@ -428,8 +428,25 @@ export async function getProjectByClientId(clientId: string, userId: string): Pr
     FROM project
     JOIN client_project ON project.id = client_project.project_id
     JOIN client ON client_project.client_id = client.id
-    WHERE client_project.client_id = ${clientId} AND project.user_id = ${userId}
+    WHERE client_project.client_id = ${clientId} AND (project.user_id = ${userId} OR project.team_id = ${teamId})
     ORDER BY project.created_at ASC;
+  `;
+  return data;
+}
+
+//チームがあるかどうか判定
+export async function getTeamByUserId(userId: string): Promise<{ id: string; name: string } | null> {
+  const data = await sql<{ id: string; name: string }[]>`
+    SELECT id, name FROM teams WHERE user_id = ${userId}
+  `;
+  return data.length > 0 ? data[0] : null;
+}
+//チームメンバー取得
+export async function getTeamMembers(teamId: string): Promise<{ id: string; name: string }[]> {
+  const data = await sql<{ id: string; name: string }[]>`
+    SELECT users.id, users.name
+    FROM users
+  WHERE users.team_id = ${teamId}
   `;
   return data;
 }

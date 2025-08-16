@@ -7,11 +7,12 @@ import { defaultUpdateCategory } from '@/app/lib/actions';
 type category = { id: string; title: string };
 
 export default function CategoryEditForm(
-  {category,userId,defaultId}:
+  {category,userId,defaultId, teamId}:
    { 
     category: { id: string; title: string }; 
     userId: string;
     defaultId: string; // デフォルトIDを受け取る
+    teamId: string; // チームIDを受け取る
   }) {
   const [title, setTitle] = useState(category.title);
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function CategoryEditForm(
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await defaultUpdateCategory(category.id, title,userId);
+      await defaultUpdateCategory(category.id, title,userId, teamId); // カテゴリーを更新
       alert('カテゴリーを更新しました');
       router.push(`/dashboard/default/${defaultId}`); // 更新後に一覧ページへリダイレクト
       router.refresh(); // 一覧を更新！

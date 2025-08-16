@@ -11,7 +11,8 @@ export default async function Page({
   const { id: projectId, categoryId } = await params;
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
-  const category = await getCategoryById(categoryId,userId);
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
+  const category = await getCategoryById(categoryId,userId, teamId); // カテゴリー情報を取得
 
   return (
     <div className="p-4">

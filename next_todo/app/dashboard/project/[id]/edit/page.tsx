@@ -10,8 +10,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const { id } = await params; // Promise を await する
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
-    const project = await getProjectById(id, userId);
-  const clients = await getClient(userId); // クライアントデータを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
+    const project = await getProjectById(id, userId, teamId); // プロジェクトデータを取得
+  const clients = await getClient(userId,teamId); // クライアントデータを取得
 
 
   return (

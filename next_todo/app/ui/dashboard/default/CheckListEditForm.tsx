@@ -26,6 +26,7 @@ export default function CheckListEditForm({ checkListData,Category,defaultId }: 
   const router = useRouter();
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
 
 
@@ -40,7 +41,7 @@ export default function CheckListEditForm({ checkListData,Category,defaultId }: 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await defaultUpdateCheckList(checkListData.id, title, categories.map(cat => cat.id), userId);
+      await defaultUpdateCheckList(checkListData.id, title, categories.map(cat => cat.id), userId, teamId); // チェックリストを更新
       alert('チェックリストを更新しました');
       router.push(`/dashboard/default/${defaultId}`); // ← ここで遷移
     } catch (error) {

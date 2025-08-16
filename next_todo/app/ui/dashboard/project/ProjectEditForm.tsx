@@ -18,6 +18,7 @@ export default function ProjectEditForm({ project, clients }: { project: Project
   const id = project.id; // プロジェクトIDを受け取る
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
   // 初期値をセット
   useEffect(() => {
     setTitle(project.title);
@@ -27,7 +28,7 @@ export default function ProjectEditForm({ project, clients }: { project: Project
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await updateProject(id, title, client, userId);
+      await updateProject(id, title, client, userId, teamId);
       // 登録完了後にリダイレクト
       router.push('/dashboard/project?updated=2');
     } catch (error) {

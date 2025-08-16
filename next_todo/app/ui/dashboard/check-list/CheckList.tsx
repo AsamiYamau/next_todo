@@ -11,6 +11,8 @@ import { useSession } from 'next-auth/react';
 
 
 
+
+
 export type CheckListItem = {
   id: string;
   title: string;
@@ -21,6 +23,8 @@ export type CheckListItem = {
   checked_user_name?: string | null; // チェックしたユーザー名
   created_at?: string; // 作成日時
   checked_at?: string; // チェック日時
+  user_id?: string; // ユーザーID
+  team_id?: string; // チームID
 };
 
 type Props = {
@@ -31,8 +35,10 @@ type Props = {
 
 
 export default function CheckList({ checkList, onStatusChange, projectId }: Props) {
+
+
   // 削除ハンドラ
-  const handleDelete = async (id: string, userId: string) => {
+  const handleDelete = async (id: string, userId: string, teamId:string) => {
     if (confirm('本当に削除しますか？')) {
       await fetch(`/api/checklist/${id}/delete`, { method: 'DELETE' });
       window.location.reload();
@@ -49,6 +55,7 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
   const LoguinUser = (session?.user as any)?.id; // セッションからユーザーIDを取得
   const LoguinUserName = (session?.user as any)?.name; // セッションからユーザー名を取得
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
 
 
@@ -108,7 +115,7 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
                 <button
                   type="button"
                   className="ml-4 text-red-500 hover:underline"
-                  onClick={() => handleDelete(item.id, userId)}
+                  onClick={() => handleDelete(item.id, userId, teamId)}
                 >
                   <Image src={DeleteIcon} alt="Delete" width={20} height={20} className="inline-block" />
                 </button>

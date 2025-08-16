@@ -17,9 +17,10 @@ export default async function Page({
 }) {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
 
-  const data = await getDefaultTemplate(userId);
+  const data = await getDefaultTemplate(userId, teamId); // デフォルトテンプレートを取得
   const sp = await searchParams;
   return (
     <main>

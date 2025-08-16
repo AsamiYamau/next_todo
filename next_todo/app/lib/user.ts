@@ -24,15 +24,29 @@ export async function getUserById(id: string): Promise<User | null> {
   return data[0] ?? null;
 }
 
-export async function updateUserRole(id: string, role: string): Promise<void> {
+export async function updateUserRole(id: string, role: number): Promise<void> {
   await sql`
     UPDATE users SET role = ${role} WHERE id = ${id}
   `;
 }
 
-export async function createUser(name: string, email: string, hashedPassword: string, plan: number): Promise<void> {
+export async function createUser(name: string, email: string, hashedPassword: string, role:number, plan: number,team_id:string): Promise<void> {
   await sql`
-    INSERT INTO users (name, email, password, plan)
-    VALUES (${name}, ${email}, ${hashedPassword}, ${plan})
+    INSERT INTO users (name, email, password,role, plan,team_id)
+    VALUES (${name}, ${email}, ${hashedPassword},${role}, ${plan}, ${team_id})
+  `;
+}
+
+//招待トークンがあるかどうか判定
+export async function getInviteByToken(token: string) {
+  const invites = await sql`
+    SELECT * FROM invites WHERE token = ${token}
+  `;
+  return invites.length > 0 ? invites[0] : null;
+}
+// 招待を受け入れたらinvitesテーブルのacceptedを更新
+export async function markInviteAccepted(token: string) {
+  await sql`
+    UPDATE invites SET accepted = true WHERE token = ${token}
   `;
 }

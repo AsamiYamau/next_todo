@@ -8,12 +8,13 @@ export default async function CheckListEditPage({ params }: { params: Promise<{ 
   const { checkListId } = await params; // Promise を await する
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
-  const checkListData = await getCheckListById(checkListId, userId);
+  const checkListData = await getCheckListById(checkListId, userId, teamId); // チェックリストデータを取得
   // project_idを取得
-  const projectId = await getProjectIdByCheckListId(checkListId, userId);
+  const projectId = await getProjectIdByCheckListId(checkListId, userId, teamId);
   // プロジェクトのカテゴリーを取得
-  const projectCategories = await getCategoriesByProjectId(projectId!, userId);
+  const projectCategories = await getCategoriesByProjectId(projectId!, userId, teamId); // プロジェクトIDに紐づくカテゴリーを取得
 
 
   return (

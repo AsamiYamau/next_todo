@@ -21,16 +21,16 @@ export default async function ProjectDetailPage({
   const sp = await searchParams;
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
-  const data = await getCheckListByProjectId(id, userId);
+  const data = await getCheckListByProjectId(id, userId, teamId); // プロジェクトIDに紐づくチェックリストを取得
 
 
-  const project = await getProjectById(id, userId);
+  const project = await getProjectById(id, userId, teamId); // プロジェクトデータを取得
 
-  const categories = await getCategoriesByProjectId(id, userId);
+  const categories = await getCategoriesByProjectId(id, userId, teamId); // プロジェクトに紐づくカテゴリーを取得
 
-  const defaultTemplate = await getDefaultTemplate(userId);
-console.log(defaultTemplate);
+  const defaultTemplate = await getDefaultTemplate(userId, teamId); // デフォルトテンプレートを取得
   
 
 

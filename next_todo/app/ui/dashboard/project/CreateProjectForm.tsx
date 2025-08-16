@@ -11,11 +11,12 @@ export default function CreateProjectForm({ clients }: { clients: { id: string; 
   const router = useRouter();
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await createProject(title, client, userId);
+      await createProject(title, client, userId, teamId);
       // 登録完了後にリダイレクト
       router.push('/dashboard/project?updated=1');
     } catch (error) {

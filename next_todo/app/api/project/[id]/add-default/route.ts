@@ -23,15 +23,16 @@ export async function POST(
     return new Response('Unauthorized', { status: 401 });
   }
   const userId = (session?.user as any)?.id;  // ← ログイン中ユーザーのIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
   // projectIdを取得
   const { id: projectId } = await params;
 
   // デフォルトカテゴリーの取得
-  const categories = await getDefaultCheckListCategory(defaultProjectId, userId);
+  const categories = await getDefaultCheckListCategory(defaultProjectId, userId,teamId);
 
   // デフォルトチェックリストの取得
-  const defaultCheckList = await getDefaultCheckList(defaultProjectId, userId);
+  const defaultCheckList = await getDefaultCheckList(defaultProjectId, userId,teamId);
   console.log('defaultCheckList', defaultCheckList);
 
   // カテゴリーの配列からidを除いた配列を作成
@@ -41,7 +42,7 @@ export async function POST(
   const categoryMap = new Map<string, string>();
   // まずはカテゴリーを追加
   for (const item of categoryTitles) {
-    const category = await createCheckListCategory(item.title, projectId, userId);
+    const category = await createCheckListCategory(item.title, projectId, userId, teamId); // チームIDを追加
     // カテゴリーを追加した後、idを取得してMapに保存
     categoryMap.set(item.title, category.id); // ←戻り値に id が必要！
   }
@@ -65,7 +66,7 @@ export async function POST(
     .map(title => categoryMap.get(title))
     .filter((id): id is string => typeof id === 'string');
     
-    await createCheckList(item.title, projectId, categoryIds,item.createdUser ?? '',userId);
+    await createCheckList(item.title, projectId, categoryIds,item.createdUser ?? '',userId, teamId); // チームIDを追加
   }
 
   return NextResponse.json({ ok: true });

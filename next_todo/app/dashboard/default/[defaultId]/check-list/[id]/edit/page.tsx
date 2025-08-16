@@ -12,11 +12,12 @@ export default async function CheckListEditPage({
   
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; 
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
-  const checkListData = await getDefaultCheckListById(checkListId, userId);
-  const defaultId = await getDefaultIdByCheckListId(checkListId, userId);
+  const checkListData = await getDefaultCheckListById(checkListId, userId, teamId); // チェックリスト情報を取得
+  const defaultId = await getDefaultIdByCheckListId(checkListId, userId, teamId); // チェックリストに紐づくデフォルトIDを取得
   console.log('defaultId:', defaultId);
-  const categories = await getDefaultCheckListCategory(defaultId!, userId);
+  const categories = await getDefaultCheckListCategory(defaultId!, userId, teamId); // デフォルトチェックリストのカテゴリーを取得
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">

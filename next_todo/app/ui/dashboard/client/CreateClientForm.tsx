@@ -12,11 +12,12 @@ export default function createClientForm() {
   const router = useRouter();
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await createClient(client, userId); // ユーザーIDを渡す
+      await createClient(client, userId,teamId); // ユーザーIDを渡す
       // 登録完了後にリダイレクト
       router.push('/dashboard/client?updated=1');
     } catch (error) {

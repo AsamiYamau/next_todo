@@ -20,12 +20,14 @@ export const authOptions = {
         const valid = await bcrypt.compare(credentials!.password, user.password);
         if (!valid) return null;
 
+
         return {
           id: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
           plan: user.plan, 
+          team_id: user.team_id, // チームIDを追加
         };
       },
     }),
@@ -42,6 +44,7 @@ callbacks: {
       token.id = user.id;
       token.role = (user as any).role; // User型にroleが含まれていないため
       token.plan = (user as any).plan; 
+      token.team_id = (user as any).team_id; // チームIDを追加
     }
     return token;
   },
@@ -50,6 +53,7 @@ async session({ session, token }: { session: Session; token: JWT }) {
   (session.user as any).id = (token as any).id;
   (session.user as any).role = (token as any).role;
   (session.user as any).plan = (token as any).plan; 
+  (session.user as any).team_id = (token as any).team_id; // チームIDを追加
   }
   return session;
 }

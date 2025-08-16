@@ -18,12 +18,13 @@ export default async function Page({
 }) {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
   const { clientId } = await params;
 
-  const data = await getProjectByClientId(clientId,userId);
+  const data = await getProjectByClientId(clientId,userId, teamId); // クライアントIDに紐づくプロジェクトを取得
   const sp = await searchParams;
-  const clients = await getClient(userId); // クライアントデータを取得
+  const clients = await getClient(userId, teamId); // クライアントデータを取得
   console.log(clientId, 'params in project page');
 
   return (

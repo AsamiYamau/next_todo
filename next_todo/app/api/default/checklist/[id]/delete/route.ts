@@ -3,9 +3,10 @@ import { defaultDeleteCheckList } from '@/app/lib/actions';
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string; userId:string }> }
+  { params }: { params: Promise<{ id: string; userId:string; teamId:string }> }
 ) {
-  const { id,userId } = await params;
-  await defaultDeleteCheckList(id,userId);
+  const { id } = await params;
+  const { userId, teamId } = await req.json(); // ユーザーIDとチームIDをリクエストボディから取得
+  await defaultDeleteCheckList(id,userId,teamId);
   return NextResponse.json({ ok: true });
 }

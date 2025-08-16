@@ -18,13 +18,14 @@ export default async function Page({
 }) {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
   const { id } = await params;
   
 
-  const data = await getProject(userId);
+  const data = await getProject(userId, teamId); // プロジェクトデータを取得
   const sp = await searchParams;
-  const clients = await getClient(userId); // クライアントデータを取得
+  const clients = await getClient(userId,teamId); // クライアントデータを取得
   return (
     <main>
       {/* 更新バナー */}

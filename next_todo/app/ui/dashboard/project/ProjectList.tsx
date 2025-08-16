@@ -23,10 +23,11 @@ export type Project = {
 export default function ProjectList({ data }: { data: Project[] }) {
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
   const router = useRouter();
   const handleDelete = async (id: string, userId: string) => {
     if (confirm('本当に削除しますか？')) {
-      await deleteProject(id, userId);
+      await deleteProject(id, userId, teamId); // プロジェクトを削除
       router.refresh(); // 一覧を更新
     }
   };

@@ -26,6 +26,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
   const router = useRouter();
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
   // 初期値をセット
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateCheckList(checkListData.id, title, categories.map(cat => cat.id), userId);
+      await updateCheckList(checkListData.id, title, categories.map(cat => cat.id), userId, teamId); // チェックリストを更新
       router.push(`/dashboard/project/${ProjectId}?updated=3`); // ← ここで遷移
     } catch (error) {
       alert('更新に失敗しました');

@@ -5,6 +5,7 @@ export type User = {
   password: string;
   role: number;
   plan: number; // ユーザープランを追加
+  team_id: string | null; // チームIDをオプションとして追加
 };
 
 export type CheckListItem = {
@@ -24,6 +25,7 @@ export type Project = {
   client_id?: string; // クライアントIDをオプションとして追加
   client_name?: string; // クライアント名をオプションとして追加
   user_id: string; // ユーザーID
+  team_id?: string; // チームIDを追加
 };
 
 export type CheckListItemWithCategories = {
@@ -55,4 +57,5 @@ export type Client = {
   id: string;
   name: string;
   user_id: string; // ユーザーID
+  team_id?: string; // チームIDを追加
 }

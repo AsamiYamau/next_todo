@@ -14,6 +14,7 @@ const links = [
   // { name: '案件新規追加', href: '/dashboard/project/create' },
   { name: 'クライアント管理', href: '/dashboard/client' },
   { name: 'デフォルトチェックリスト設定', href: '/dashboard/default' },
+  { name: 'メンバー管理', href: '/dashboard/member' },
 
 
 ];

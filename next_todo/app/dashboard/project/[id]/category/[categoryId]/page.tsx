@@ -15,10 +15,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const { id: projectId, categoryId } = await params;
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
-  const project = await getProjectById(projectId, userId);
+  const project = await getProjectById(projectId, userId, teamId); // プロジェクトデータを取得
 
-  const categories = await getCategoriesByProjectId(projectId, userId);
+  const categories = await getCategoriesByProjectId(projectId, userId, teamId); // プロジェクトに紐づくカテゴリーを取得
 
   const data = await choiceCategory(categoryId);
 

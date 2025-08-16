@@ -1,18 +1,16 @@
 // app/ui/CheckList.tsx
-'use client';
+"use client";
 
 import { spawn } from "child_process";
-import Link from 'next/link';
+import Link from "next/link";
 import { useSession } from "next-auth/react";
-
-
 
 export type CheckListItem = {
   id: string;
   title: string;
   status: boolean;
   categories?: { id: string; title: string }[];
-    created_user?: string; // 追加者のID
+  created_user?: string; // 追加者のID
   created_user_name: string; // ← ユーザー名
   checked_user_name?: string | null; // チェックしたユーザー名
   created_at?: string; // 作成日時
@@ -25,19 +23,27 @@ type Props = {
   defaultId?: string; // デフォルトプロジェクトIDはオプション
 };
 
-
-export default function CheckList({ checkList, onStatusChange,defaultId}: Props) {
+export default function CheckList({
+  checkList,
+  onStatusChange,
+  defaultId,
+}: Props) {
   const { data: session } = useSession();
   const LoguinUser = (session?.user as any)?.id; // セッションからユーザーIDを取得
   const LoguinUserName = (session?.user as any)?.name; // セッションからユーザー名を取得
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
-  console.log('checkList:', checkList);
-  
+  console.log("checkList:", checkList);
+
   // 削除ハンドラ
-  const handleDelete = async (id: string,userId:string) => {
-    if (confirm('本当に削除しますか？')) {
-      await fetch(`/api/default/checklist/${id}/delete`, { method: 'DELETE' });
+  const handleDelete = async (id: string, userId: string, teamId: string) => {
+    if (confirm("本当に削除しますか？")) {
+      await fetch(`/api/default/checklist/${id}/delete`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, teamId }),
+      });
       window.location.reload();
     }
   };
@@ -52,8 +58,8 @@ export default function CheckList({ checkList, onStatusChange,defaultId}: Props)
           <div className="">
             <h2 className="font-bold">
               {item.title}
-              {item.categories && item.categories.length > 0 && (
-
+              {item.categories &&
+                item.categories.length > 0 &&
                 item.categories.map((category) => (
                   <span
                     key={category.id}
@@ -61,9 +67,7 @@ export default function CheckList({ checkList, onStatusChange,defaultId}: Props)
                   >
                     {category.title}
                   </span>
-                ))
-
-              )}
+                ))}
             </h2>
             <span>追加者：{item.created_user_name}</span> {item.created_at}
           </div>
@@ -78,7 +82,7 @@ export default function CheckList({ checkList, onStatusChange,defaultId}: Props)
               <button
                 type="button"
                 className="ml-4 text-red-500 hover:underline"
-                onClick={() => handleDelete(item.id, userId)}
+                onClick={() => handleDelete(item.id, userId, teamId)}
               >
                 削除
               </button>

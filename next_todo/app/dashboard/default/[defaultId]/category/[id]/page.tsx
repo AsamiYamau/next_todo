@@ -16,10 +16,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   // console.log( 'defaultId:', defaultId, 'categoryId:', id);
   const session = await getServerSession(authOptions);
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
-  const project = await getDefaultById(defaultId,userId);
+  const project = await getDefaultById(defaultId,userId, teamId); // デフォルトチェックリストのプロジェクト情報を取得
 
-  const categories = await getDefaultCheckListCategory(defaultId, userId);
+  const categories = await getDefaultCheckListCategory(defaultId, userId, teamId); // デフォルトチェックリストのカテゴリーを取得
 
   const data = await choiceDefaultCategory(id);
 
