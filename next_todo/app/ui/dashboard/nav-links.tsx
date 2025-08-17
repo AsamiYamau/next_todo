@@ -4,10 +4,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+//sesstionの取得
+import { useSession } from 'next-auth/react';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
-const links = [
+let links = [
   { name: 'Home', href: '/dashboard'},
   // { name: '提出前チェックリスト', href: '/dashboard/check-list' },
   { name: '案件管理', href: '/dashboard/project' },
@@ -20,6 +22,15 @@ const links = [
 ];
 
 export default function NavLinks() {
+  const { data: session } = useSession();
+  const userId = (session?.user as any)?.id; // ユーザーIDを取得
+  const userRole = (session?.user as any)?.role; // ユーザーのロールを取得
+  // ユーザーのロールが1（管理者）でない場合は
+  if (userRole !== 1) {
+    // メンバー管理のリンクを除外
+    links = links.filter(link => link.name !== 'メンバー管理');
+  }
+
   const pathname = usePathname();
   return (
     <>

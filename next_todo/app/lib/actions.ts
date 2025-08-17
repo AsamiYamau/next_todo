@@ -552,3 +552,17 @@ export async function createInvite(email: string, teamId: string) {
   return inviteToken;
 }
 
+// ユーザーの権限変更
+export async function updateUserRole(userId: string, roleValue: number) {
+  try {
+    await sql`
+      UPDATE users
+      SET role = ${roleValue}
+      WHERE id = ${userId}
+    `;
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    throw new Error('Failed to update user role');
+  }
+}
+

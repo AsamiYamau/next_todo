@@ -434,17 +434,17 @@ export async function getProjectByClientId(clientId: string, userId: string,team
   return data;
 }
 
-//チームがあるかどうか判定
-export async function getTeamByUserId(userId: string): Promise<{ id: string; name: string } | null> {
+//チーム情報の取得
+export async function getTeamByTeamId(teamId: string): Promise<{ id: string; name: string } | null> {
   const data = await sql<{ id: string; name: string }[]>`
-    SELECT id, name FROM teams WHERE user_id = ${userId}
+    SELECT id, name FROM teams WHERE id = ${teamId} 
   `;
   return data.length > 0 ? data[0] : null;
 }
 //チームメンバー取得
-export async function getTeamMembers(teamId: string): Promise<{ id: string; name: string }[]> {
-  const data = await sql<{ id: string; name: string }[]>`
-    SELECT users.id, users.name
+export async function getTeamMembers(teamId: string): Promise<{ id: string; name: string; role:number }[]> {
+  const data = await sql<{ id: string; name: string; role:number }[]>`
+    SELECT users.id, users.name, users.role
     FROM users
   WHERE users.team_id = ${teamId}
   `;
