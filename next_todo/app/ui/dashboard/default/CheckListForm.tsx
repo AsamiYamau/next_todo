@@ -10,6 +10,10 @@ import Category from "@/app/ui/dashboard/project/Category"; // カテゴリー�
 import { getDefaultCheckListCategory } from "@/app/lib/data"; // カテゴリー取得関数をインポート
 import Link from "next/link";
 
+import Image from "next/image";
+import EditIcon from "@/public/ico/edit.svg";
+import DeleteIcon from "@/public/ico/trash.svg";
+
 export default function CheckListForm({
   defaultCategories,
   defaultId,
@@ -123,14 +127,26 @@ export default function CheckListForm({
                               href={`/dashboard/default/${defaultId}/category/${cat.id}/edit`}
                               className="text-blue-500 hover:underline mr-2"
                             >
-                              編集
+                               <Image
+                                src={EditIcon}
+                                alt="Edit"
+                                width={20}
+                                height={20}
+                                className="inline-block"
+                              />
                             </Link>
                             <button
                               type="button"
                               className="ml-4 text-red-500 hover:underline"
                               onClick={() => handleDelete(cat.id, userId, teamId ?? '')}
                             >
-                              削除
+                              <Image
+                                src={DeleteIcon}
+                                alt="Delete"
+                                width={20}
+                                height={20}
+                                className="inline-block"
+                              />
                             </button>
                           </span>
                         </label>

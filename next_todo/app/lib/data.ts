@@ -410,11 +410,19 @@ export async function getUserNameById(userId: string): Promise<string | null> {
 //クライアント情報の取得
 export async function getClient(userId: string,teamId:string): Promise<Client[]> {
   const data = await sql<Client[]>`
-    SELECT id, name FROM client 
+    SELECT id, name,memo FROM client 
     WHERE user_id = ${userId} OR team_id = ${teamId}
     ORDER BY created_at ASC; 
   `;
   return data;
+}
+//クライアント詳細で使用する、クライアントのidと紐づいた情報を取得
+export async function getClientById(clientId: string, userId: string,teamId:string): Promise<Client | null> {
+  const data = await sql<Client[]>`
+    SELECT id, name, memo FROM client 
+    WHERE id = ${clientId} AND (user_id = ${userId} OR team_id = ${teamId})
+  `;
+  return data.length > 0 ? data[0] : null;
 }
 //クライアントidから、紐づくプロジェクトを取得
 export async function getProjectByClientId(clientId: string, userId: string,teamId:string): Promise<Project[]> {

@@ -7,7 +7,7 @@ import { createClient } from '@/app/lib/actions';
 import { useSession } from 'next-auth/react';
 
 export default function createClientForm() {
-  const [title, setTitle] = useState('');
+  const [memo, setMemo] = useState('');
   const [client, setClient] = useState('');
   const router = useRouter();
   const { data: session } = useSession();
@@ -17,7 +17,7 @@ export default function createClientForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await createClient(client, userId,teamId); // ユーザーIDを渡す
+      await createClient(client, memo, userId,teamId); // ユーザーIDを渡す
       // 登録完了後にリダイレクト
       router.push('/dashboard/client?updated=1');
     } catch (error) {
@@ -36,6 +36,15 @@ export default function createClientForm() {
               onChange={(e) => setClient(e.target.value)}
               placeholder="クライアント名"
               required
+              className='mb-4 p-2 border border-gray-300 rounded w-full'
+            />
+          </div>
+          <div className="w-[45%]">
+            <div className="font-bold text-blue-500">メモ</div>
+            <textarea
+              value={memo}
+              onChange={(e) => setMemo(e.target.value)}
+              placeholder="メモ"
               className='mb-4 p-2 border border-gray-300 rounded w-full'
             />
           </div>

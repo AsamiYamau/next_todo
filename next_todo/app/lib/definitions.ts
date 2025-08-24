@@ -58,4 +58,5 @@ export type Client = {
   name: string;
   user_id: string; // ユーザーID
   team_id?: string; // チームIDを追加
+  memo?: string; // メモをオプションとして追加
 }

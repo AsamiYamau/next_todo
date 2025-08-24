@@ -121,7 +121,7 @@ export default function CheckListForm({
                             />
                             <span className="font-bold mr-4">{cat.title}</span>
                           </span>
-                          <span>
+                          <span className="ml-auto">
                             <Link
                               href={`/dashboard/project/${projectId}/category/${cat.id}/edit`}
                               className="hover:opacity-80 mr-2"

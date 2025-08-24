@@ -33,7 +33,11 @@ export default function ClientList({ data }: { data: Client[] }) {
         >
           <div className="w-3/4">
             <h2 className="font-bold">
+              <Link 
+                href={`/dashboard/client/${client.id}`}
+                className="text-blue-600 hover:underline">
               {client.name}
+              </Link>
             </h2>
           </div>
           <div className='w-1/4 mt-auto'>

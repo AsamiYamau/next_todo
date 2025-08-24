@@ -495,11 +495,11 @@ export async function defaultUpdateCheckListStatus(id: string, status: string) {
 
 
 //クライアント新規追加
-export async function createClient(name: string, userId: string, teamId: string | null) {
+export async function createClient(name: string, memo:string, userId: string, teamId: string | null) {
   try {
     await sql`
-      INSERT INTO client (name, user_id, team_id)
-      VALUES (${name}, ${userId}, ${teamId})
+      INSERT INTO client (name, memo, user_id, team_id)
+      VALUES (${name}, ${memo}, ${userId}, ${teamId})
     `;
   } catch (error) {
     // エラーをログに出力

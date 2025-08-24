@@ -5,6 +5,10 @@ import { spawn } from "child_process";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
+import Image from "next/image";
+import EditIcon from "@/public/ico/edit.svg";
+import DeleteIcon from "@/public/ico/trash.svg";
+
 export type CheckListItem = {
   id: string;
   title: string;
@@ -77,14 +81,27 @@ export default function CheckList({
                 href={`/dashboard/default/${defaultId}/check-list/${item.id}/edit`}
                 className="text-blue-500 hover:underline"
               >
-                編集
+                <Image
+                  src={EditIcon}
+                  alt="Edit"
+                  width={20}
+                  height={20}
+                  className="inline-block mr-2"
+                />
+                
               </Link>
               <button
                 type="button"
                 className="ml-4 text-red-500 hover:underline"
                 onClick={() => handleDelete(item.id, userId, teamId)}
               >
-                削除
+                <Image
+                  src={DeleteIcon}
+                  alt="Delete"
+                  width={20}
+                  height={20}
+                  className="inline-block"
+                />
               </button>
             </div>
           </div>
