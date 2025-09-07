@@ -518,6 +518,20 @@ export async function deleteClient(clientId: string) {
     throw new Error('Failed to delete client');
   }
 }
+//クライアント編集
+export async function updateClient(id: string, name: string, memo: string,userId: string, teamId: string | null) {
+  try {
+    await sql`
+      UPDATE client
+      SET name = ${name}, memo = ${memo}
+      WHERE id = ${id} AND (user_id = ${userId} OR team_id = ${teamId})
+    `;
+  } catch (error) {
+    // エラーをログに出力
+    console.error('Error updating client:', error);
+    throw new Error('Failed to update client');
+  }
+}
 
 //チーム作成
 export async function createTeam(name: string, userId: string) {

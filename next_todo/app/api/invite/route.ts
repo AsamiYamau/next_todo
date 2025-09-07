@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     // 招待トークンを生成
     const inviteToken = await createInvite(to, teamId);
     const data = await resend.emails.send({
-      from: 'onboarding@resend.dev', // 本番は独自ドメインで
+      from: 'invite@done-quest.com', // 本番は独自ドメインで
       to: to,
       subject: `${teamName} チームからの招待`,
       html: `

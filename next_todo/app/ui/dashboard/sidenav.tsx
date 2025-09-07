@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import NavLinks from '@/app/ui/dashboard/nav-links';
 import SignOut from '@/app/ui/dashboard/sign-out';
+import AccountSetting from '@/app/ui/dashboard/account-setting';
 import Image from 'next/image';
 
 
@@ -24,6 +25,7 @@ export default function SideNav() {
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
         <NavLinks />
         <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
+        <AccountSetting />
        <SignOut />
       </div>
     </div>
