@@ -20,4 +20,4 @@ export default async function ClientEditPage({ params }: { params: Promise<{ id:
       </div>
     </div>
   );
-}
+} 
