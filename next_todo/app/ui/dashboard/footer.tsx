@@ -1,0 +1,28 @@
+import Link from "next/link";
+
+export default function Footer() {
+  return (
+    <footer className="bg-gray-100 text-center p-4 mt-4">
+      <div className="">
+        <ul className="flex justify-center space-x-4 mb-2">
+          <li>
+            <Link href="/terms" className="text-sm text-gray-600 hover:underline mx-2">
+              利用規約
+            </Link>
+          </li>
+          <li>
+            <Link href="/privacy" className="text-sm text-gray-600 hover:underline mx-2">
+              プライバシーポリシー
+            </Link>
+          </li>
+          <li>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeIr2T0AQm_lmRI27JgqCLTJiB6Eus4Xtf0F8uBKQOUsAeArQ/viewform?usp=header" target="_blank" className="text-sm text-gray-600 hover:underline mx-2">
+              お問い合わせ
+            </a>
+          </li>
+        </ul>
+      </div>
+      <p className="text-sm text-gray-600">&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+  );
+}
