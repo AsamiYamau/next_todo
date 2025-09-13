@@ -3,7 +3,7 @@ import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { createInvite } from '@/app/lib/actions';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY); 
 
 export async function POST(req: Request) {
   const { to, teamName, teamId} = await req.json();
