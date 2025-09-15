@@ -14,7 +14,7 @@ export default function SideNav() {
       >
         <div className="w-full text-white md:w-full">
           <Image
-            src="/logo.svg"
+            src="/logo2.png"
             alt="Logo"
             width={200}
             height={100}

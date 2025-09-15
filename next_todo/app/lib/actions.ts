@@ -580,3 +580,24 @@ export async function updateUserRole(userId: string, roleValue: number) {
   }
 }
 
+//パスワードリセット用トークン発行
+export async function createPassToken(email: string) {
+  const passToken = uuidv4();
+
+  //ユーザーID取得
+  const [user] = await sql`
+    SELECT id FROM users WHERE email = ${email}
+  `;
+  if (!user) {
+    throw new Error('User not found');
+  }
+  const userId = user.id;
+
+  await sql`
+    INSERT INTO password_resets (user_id, token, expires_at)
+    VALUES (${userId}, ${passToken}, NOW() + INTERVAL '1 hour')
+  `;
+
+  return passToken;
+}
+

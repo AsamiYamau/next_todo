@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import Image from 'next/image';
+import EyeOpen from '@/public/ico/eye-open.svg';
+import EyeClose from '@/public/ico/eye-close.svg';
+
 export default function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -11,6 +15,9 @@ export default function RegisterForm() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [eyeIcon, setEyeIcon] = useState(EyeClose);
 
   // 招待トークンがある場合はメールアドレスを取得
   useEffect(() => {
@@ -59,26 +66,36 @@ export default function RegisterForm() {
         value={form.name}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
         required
-        className="w-full p-2 border mb-2"
+        className="w-full p-2 border mb-2 rounded"
         placeholder="Name"
       />
       <input
         value={form.email}
         onChange={(e) => setForm({ ...form, email: e.target.value })}
         required
-        className="w-full p-2 border mb-2"
+        className="w-full p-2 border mb-2 rounded"
         placeholder="Email"
         disabled={!!token} // 招待リンクの場合は編集不可
       />
-      <input
-        type="password"
-        value={form.password}
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
-        required
-        className="w-full p-2 border mb-4"
-        placeholder="Password"
-      />
-      <button className="w-full bg-green-500 text-white p-2 rounded">
+      <div className="relative">
+        <input
+          type={showPassword ? "text" : "password"}
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          required
+          className="w-full p-2 border pr-10 rounded"
+          placeholder="Password"
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword((prev) => !prev)}
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-500"
+          tabIndex={-1}
+        >
+          <Image src={showPassword ? EyeOpen : EyeClose} alt="Toggle Password Visibility" width={20} height={20} />
+        </button>
+      </div>
+      <button className="w-full bg-green-500 text-white p-2 rounded mt-4">
         登録
       </button>
     </form>
