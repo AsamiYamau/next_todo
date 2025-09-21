@@ -23,5 +23,5 @@ export function middleware(req: NextRequest) {
 
 // 全ページに適用（Next.js の内部リソースは除外）
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/:path*"], 
 };
