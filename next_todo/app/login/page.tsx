@@ -5,11 +5,18 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+//sessionの取得
+import { useSession } from "next-auth/react";
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+
+  //セッション取得し、ログイン済みか確認
+  const { data: session } = useSession();
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,11 +69,13 @@ export default function LoginPage() {
             </Link>
           </div>
         </form>
+        {!session && (
         <Link href="/register">
           <span className="bg-blue-500 text-white p-2 rounded mt-10 mr-20">
             新規登録はこちら
           </span>
         </Link>
+        )}
       </div>
     </div>
   );

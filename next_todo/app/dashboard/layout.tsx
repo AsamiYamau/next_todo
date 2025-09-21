@@ -14,16 +14,12 @@ export default async function Layout({
   if (!session) redirect("/login");
   return (
     <>
-      <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+      <div className="flex h-screen flex-col md:flex-row ">
         <div className="w-full flex-none md:w-64">
           <SideNav />
         </div>
-        <div className="flex-grow md:overflow-y-auto flex flex-col">
+        <div className="flex-grow  flex flex-col">
           {children}
-          <div className="hidden h-auto w-full grow  md:block"></div>
-          <div className="">
-            <Footer />
-          </div>
         </div>
       </div>
     </>

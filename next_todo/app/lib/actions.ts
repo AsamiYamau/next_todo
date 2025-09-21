@@ -601,3 +601,30 @@ export async function createPassToken(email: string) {
   return passToken;
 }
 
+//ユーザー名変更
+export async function updateUserName(userId: string, name: string) {
+  try {
+    await sql`
+      UPDATE users
+      SET name = ${name}
+      WHERE id = ${userId}
+    `;
+  } catch (error) {
+    console.error('Error updating user name:', error);
+    throw new Error('Failed to update user name');
+  }
+}
+
+//パスワード変更
+export async function updateUserPassword(userId: string, newPassword: string) {
+  try {
+    await sql`
+      UPDATE users
+      SET password = ${newPassword}  -- 実際にはハッシュ化されたパスワードを保存してください
+      WHERE id = ${userId}
+    `;
+  } catch (error) {
+    console.error('Error updating user password:', error);
+    throw new Error('Failed to update user password');
+  }
+}
