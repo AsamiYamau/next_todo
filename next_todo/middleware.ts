@@ -12,13 +12,21 @@ export function middleware(req: NextRequest) {
       return NextResponse.next();
     }
   }
-
+  
+  // デバッグ用: 環境変数の値をレスポンスに出す
+  return new NextResponse(`Auth required. user=${process.env.BASIC_USER}`, {
+  status: 401,
+  headers: {
+    "WWW-Authenticate": 'Basic realm="Secure Area"',
+  },
+  });
   return new NextResponse("Auth required", {
     status: 401,
     headers: {
       "WWW-Authenticate": 'Basic realm="Secure Area"',
     },
   });
+
 }
 
 // 全ページに適用（Next.js の内部リソースは除外）
