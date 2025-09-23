@@ -11,12 +11,12 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
   const client = await getClientById(id,userId, teamId); //
   console.log("client", client);
   return (
-    <div>
+    <main className='p-6 md:p-12'>
       {/* クライアント詳細や内容 */}
       <h2>クライアント名：<span>{client?.name}</span></h2>
 
       <h3 className='mt-4'>メモ</h3>
-      <p className='p-2  border-2 border-blue-200 rounded whitespace-pre-wrap'>{client?.memo}</p>
-    </div>
+      <p className='p-2  border-2 border-sky-900 rounded whitespace-pre-wrap'>{client?.memo}</p>
+    </main>
   );
 }

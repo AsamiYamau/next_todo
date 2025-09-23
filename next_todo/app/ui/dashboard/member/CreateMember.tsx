@@ -28,7 +28,7 @@ export default function CreateMember() {
   };
   return (
     <div className="">
-      <div className="font-bold text-blue-500">⚫︎チーム作成</div>
+      <div className="font-bold text-sky-900">⚫︎チーム作成</div>
       <div className="border border-2 border-gray-300 p-4 rounded w-[50%] mt-4">
         <div className="flex items-center justify-between">
           <input
@@ -40,7 +40,7 @@ export default function CreateMember() {
           />
           <button
             onClick={createTeam}
-            className="bg-blue-400 p-2 px-4 rounded font-bold text-white ml-2"
+            className="bg-sky-900 p-2 px-4 rounded font-bold text-white ml-2"
           >
             チーム作成
           </button>

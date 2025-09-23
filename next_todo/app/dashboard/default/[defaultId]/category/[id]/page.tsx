@@ -35,7 +35,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 // console.log('ProjectCategoryPage data:', data);
 
   return (
-    <main>
+    <main className='p-6 md:p-12'>
       <div className="flex items-center justify-between">
         <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
           提出前チェックリスト

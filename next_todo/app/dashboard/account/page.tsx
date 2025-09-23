@@ -5,13 +5,19 @@ import { useState, useEffect } from "react";
 import { getUserNameById } from "@/app/lib/data";
 import { useSession } from "next-auth/react";
 
-export default function AccountPage() {
+import Image from "next/image";
+import EyeOpen from "@/public/ico/eye-open.svg";
+import EyeClose from "@/public/ico/eye-close.svg";
 
+export default function AccountPage() {
   const { data: session } = useSession();
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
   const userName = (session?.user as any)?.name; // ユーザー名を取得
 
-   // userNameが取得できたら初期値としてセット
+  const [showPassword, setShowPassword] = useState(false);
+  const [eyeIcon, setEyeIcon] = useState(EyeClose);
+
+  // userNameが取得できたら初期値としてセット
   useEffect(() => {
     if (userName) {
       setName(userName);
@@ -24,8 +30,6 @@ export default function AccountPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-
 
   // 名前変更
   const handleNameChange = async (e: React.FormEvent) => {
@@ -78,7 +82,6 @@ export default function AccountPage() {
         setError(data.message || "パスワードの変更に失敗しました");
         return;
       }
-      
 
       setMessage("パスワードを変更しました");
       setCurrentPassword("");
@@ -90,53 +93,110 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 space-y-10">
+    <main className="p-6 md:p-12 max-w-lg mx-auto mt-10 space-y-10">
       <h1 className="text-2xl font-bold mb-6">アカウント設定</h1>
 
       {/* 名前変更フォーム */}
-      <form onSubmit={handleNameChange} className="bg-white p-6 rounded shadow space-y-4">
+      <form
+        onSubmit={handleNameChange}
+        className="bg-white p-6 rounded shadow space-y-4"
+      >
         <h2 className="font-bold text-lg">名前の変更</h2>
         <input
           type="text"
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           className="w-full p-2 border rounded"
           placeholder="新しい名前"
           required
         />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded" type="submit">
+        <button
+          className="bg-sky-900 text-white px-4 py-2 rounded mt-4"
+          type="submit"
+        >
           名前を変更
         </button>
       </form>
 
       {/* パスワード変更フォーム */}
-      <form onSubmit={handlePasswordChange} className="bg-white p-6 rounded shadow space-y-4">
+      <form
+        onSubmit={handlePasswordChange}
+        className="bg-white p-6 rounded shadow"
+      >
         <h2 className="font-bold text-lg">パスワードの変更</h2>
-        <input
-          type="password"
-          value={currentPassword}
-          onChange={e => setCurrentPassword(e.target.value)}
-          className="w-full p-2 border rounded"
-          placeholder="現在のパスワード"
-          required
-        />
-        <input
-          type="password"
-          value={newPassword}
-          onChange={e => setNewPassword(e.target.value)}
-          className="w-full p-2 border rounded"
-          placeholder="新しいパスワード"
-          required
-        />
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-          className="w-full p-2 border rounded"
-          placeholder="新しいパスワード（確認）"
-          required
-        />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded" type="submit">
+        <div className="relative">
+          <input
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="現在のパスワード"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-500"
+            tabIndex={-1}
+          >
+            <Image
+              src={showPassword ? EyeOpen : EyeClose}
+              alt="Toggle Password Visibility"
+              width={20}
+              height={20}
+            />
+          </button>
+        </div>
+        <div className="relative mt-4">
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="新しいパスワード"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-500"
+            tabIndex={-1}
+          >
+            <Image
+              src={showPassword ? EyeOpen : EyeClose}
+              alt="Toggle Password Visibility"
+              width={20}
+              height={20}
+            />
+          </button>
+        </div>
+        <div className="relative mt-4">
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="新しいパスワード（確認）"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-500"
+            tabIndex={-1}
+          >
+            <Image
+              src={showPassword ? EyeOpen : EyeClose}
+              alt="Toggle Password Visibility"
+              width={20}
+              height={20}
+            />
+          </button>
+        </div>
+        <button
+          className="bg-sky-900 text-white px-4 py-2 rounded mt-4"
+          type="submit"
+        >
           パスワードを変更
         </button>
       </form>
@@ -144,6 +204,6 @@ export default function AccountPage() {
       {/* メッセージ表示 */}
       {message && <p className="text-green-600">{message}</p>}
       {error && <p className="text-red-600">{error}</p>}
-    </div>
+    </main>
   );
 }

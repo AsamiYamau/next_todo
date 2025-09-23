@@ -20,12 +20,12 @@ export default async function CheckListEditPage({
   const categories = await getDefaultCheckListCategory(defaultId!, userId, teamId); // デフォルトチェックリストのカテゴリーを取得
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <main className="p-6 md:p-12 flex flex-col items-center justify-center h-screen">
       <h1 className="text-2xl font-bold mb-4">チェックリスト編集ページ</h1>
       <p className="text-gray-600">ここではチェックリストの編集ができます。</p>
       <div className="border border-2 border-gray-300 p-4 rounded w-[60%] mx-auto mt-8">
         <CheckListEditForm checkListData={checkListData!} Category={categories!} defaultId={defaultId!}/>
       </div>
-    </div>
+    </main>
   );
 }

@@ -83,7 +83,7 @@ export default function CheckListForm({
       <div className="p-4 rounded mb-4 grid grid-cols-2 gap-8">
         {/* チェックリスト新規追加 */}
         <div className="border border-2 border-gray-300 p-4 rounded">
-          <div className="font-bold text-blue-500">
+          <div className="font-bold text-sky-900">
             ⚫︎新規リスト追加 （リスト個々にカテゴリーを紐付け）
           </div>
           <form onSubmit={handleSubmit} className="mt-4">
@@ -125,7 +125,7 @@ export default function CheckListForm({
                           <span>
                             <Link
                               href={`/dashboard/default/${defaultId}/category/${cat.id}/edit`}
-                              className="text-blue-500 hover:underline mr-2"
+                              className="text-sky-900 hover:underline mr-2"
                             >
                                <Image
                                 src={EditIcon}
@@ -159,7 +159,7 @@ export default function CheckListForm({
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className="bg-blue-400 p-2 px-4 rounded font-bold text-white"
+                className="bg-sky-900 p-2 px-4 rounded font-bold text-white"
               >
                 追加
               </button>
@@ -168,7 +168,7 @@ export default function CheckListForm({
         </div>
         {/* カテゴリー追加 */}
         <div className="border border-2 border-gray-300 p-4 rounded">
-          <div className="font-bold text-blue-500">
+          <div className="font-bold text-sky-900">
             ⚫︎新規カテゴリー追加 （projectにカテゴリーを紐付け）
           </div>
           <form onSubmit={handleCategorySubmit} className="mt-4">
@@ -194,7 +194,7 @@ export default function CheckListForm({
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className="bg-blue-400 p-2 px-4 rounded font-bold text-white"
+                className="bg-sky-900 p-2 px-4 rounded font-bold text-white"
               >
                 追加
               </button>

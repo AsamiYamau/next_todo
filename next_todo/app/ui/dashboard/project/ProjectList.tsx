@@ -36,18 +36,18 @@ export default function ProjectList({ data }: { data: Project[] }) {
     <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {data.map((project) => (
         <li
-          className="flex items-start justify-between bg-sky-100 p-4 mt-4 border-2 border-blue-200 rounded"
+          className="bg-sky-50 p-4 border-2 border-sky-900 rounded"
           key={project.id}
         >
-          <div className="w-3/4">
+          <div className="">
             <h2 className="font-bold">
-              <Link href={`/dashboard/project/${project.id}`} className="text-blue-600 underline hover:opacity-80">
+              <Link href={`/dashboard/project/${project.id}`} className="text-sky-900 underline hover:opacity-80">
                 {project.title}
               </Link>
             </h2>
             <span className='text-sm'>クライアント：{project.client_name}</span>
           </div>
-          <div className='w-1/4 mt-auto'>
+          <div className=''>
             <ul className="edit-list flex justify-end">
               <li className='mr-2'>
                 <Link

@@ -50,7 +50,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
     <form onSubmit={handleSubmit}>
       <div className="flex mt-8 justify-between">
         <div className="w-[45%]">
-          <div className="font-bold text-blue-500">項目名</div>
+          <div className="font-bold text-sky-900">項目名</div>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -59,7 +59,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
           />
         </div>
         <div className="w-[45%]">
-          <div className="font-bold text-blue-500">カテゴリー</div>
+          <div className="font-bold text-sky-900">カテゴリー</div>
           <div className="flex flex-col">
             {Category.map((category) => (
               <label key={category.id} className="flex items-center mb-2">
@@ -84,7 +84,7 @@ export default function CheckListEditForm({ checkListData,Category,ProjectId }: 
         </div>
       </div>
       <div className="flex justify-center mt-4">
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">更新</button>
+        <button type="submit" className="bg-sky-900 text-white px-4 py-2 rounded hover:bg-sky-900 transition">更新</button>
       </div>
     </form>
   );

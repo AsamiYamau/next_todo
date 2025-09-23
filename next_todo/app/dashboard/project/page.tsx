@@ -27,15 +27,15 @@ export default async function Page({
   const sp = await searchParams;
   const clients = await getClient(userId,teamId); // クライアントデータを取得
   return (
-    <main>
+    <main className='p-6 md:p-12'>
       {/* 更新バナー */}
       <div className="text-right">
         <Arrart updated={sp.updated} />
       </div>
       <div className="">
         <h1 className="mb-4 text-xl md:text-2xl font-bold">案件一覧</h1>
-        <div className="border border-2 border-gray-300 p-4 rounded w-[60%] mx-auto mt-8">
-          <div className="font-bold text-blue-500">⚫︎新規案件追加</div>
+        <div className="border border-2 border-gray-300 p-4 rounded mx-auto mt-8">
+          <div className="font-bold text-sky-900">⚫︎新規案件追加</div>
           <CreateProjectForm clients={clients} />
         </div>
       </div>

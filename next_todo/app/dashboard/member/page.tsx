@@ -55,7 +55,7 @@ export default async function InviteTestPage() {
 
 
   return (
-    <main>
+    <main className='p-6 md:p-12'>
       <h1 className="mb-4 text-xl md:text-2xl font-bold">メンバー管理</h1>
       {/* 初回　チーム作成 */}
       {teamCreateSection}
@@ -71,7 +71,7 @@ export default async function InviteTestPage() {
             {teamMembers.map((member) => (
               <li
                 key={member.id}
-                className="p-2  border-2 border-blue-200 rounded"
+                className="p-2  border-2 border-sky-900 rounded"
               >
                 <div className="">
                   <span className="">{member.name}</span>：
@@ -79,7 +79,7 @@ export default async function InviteTestPage() {
                     <span className="text-sm text-red-600">管理者</span>
                   )}
                   {member.role === 2 && (
-                    <span className="text-sm text-blue-600">編集者</span>
+                    <span className="text-sm text-sky-900">編集者</span>
                   )}
                 </div>
                 {/* //権限を編集 */}

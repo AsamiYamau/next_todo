@@ -56,7 +56,7 @@ export default function CheckList({
     <ul>
       {checkList.map((item) => (
         <li
-          className="flex items-center justify-between bg-sky-100 p-4 mt-4 border-2 border-blue-200 rounded"
+          className="flex items-center justify-between bg-sky-100 p-4 mt-4 border-2 border-sky-900 rounded"
           key={item.id}
         >
           <div className="">
@@ -79,7 +79,7 @@ export default function CheckList({
             <div className="edit-list flex">
               <Link
                 href={`/dashboard/default/${defaultId}/check-list/${item.id}/edit`}
-                className="text-blue-500 hover:underline"
+                className="text-sky-900 hover:underline"
               >
                 <Image
                   src={EditIcon}

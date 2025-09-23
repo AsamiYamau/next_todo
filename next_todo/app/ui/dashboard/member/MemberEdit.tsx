@@ -48,7 +48,7 @@ export default function MemberEdit({member,userId,teamId}:
         <option value={2}>編集者</option>
       </select>
       <button 
-      className="text-sm bg-blue-400 p-1 px-4 rounded font-bold text-white"
+      className="text-sm bg-sky-900 p-1 px-4 rounded font-bold text-white"
       onClick={() => handleEdit(member.id, role)}
       >
         権限を変更

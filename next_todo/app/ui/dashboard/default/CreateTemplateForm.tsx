@@ -29,7 +29,7 @@ export default function defaultCreateProjectForm({  }: {  }) {
       <form onSubmit={handleSubmit}>
         <div className="flex mt-8 justify-between">
           <div className="w-[45%]">
-            <div className="font-bold text-blue-500">案件名</div>
+            <div className="font-bold text-sky-900">案件名</div>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -40,7 +40,7 @@ export default function defaultCreateProjectForm({  }: {  }) {
           </div>
         </div>
         <div className="flex justify-center mt-4">
-          <button type="submit" className="bg-blue-400 p-2 px-4 rounded font-bold text-white">追加</button>
+          <button type="submit" className="bg-sky-900 p-2 px-4 rounded font-bold text-white">追加</button>
         </div>
       </form>
     </div>

@@ -35,19 +35,19 @@ const handleAddDefault = async (projectId: string, e: React.FormEvent) => {
   return (
     <>
       {/* <div
-        className="bg-blue-400 p-2 px-4 rounded font-bold text-white cursor-pointer"
+        className="bg-sky-900 p-2 px-4 rounded font-bold text-white cursor-pointer"
         onClick={() => handleAddDefault(projectId, LoguinUser)}
       >
         デフォルトチェックリスト反映
       </div> */}
       <form onSubmit={(e) => handleAddDefault(projectId, e)}>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center mt-4 md:mt-0">
           <select
             value={defautl}
             onChange={(e) => setDefault(e.target.value)}
             className="p-2 border border-gray-300 rounded mr-2"
           >
-            <option value="">デフォルトチェックリストを選択</option>
+            <option value="">テンプレートを選択</option>
             {defaultTemplate.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.title}
@@ -57,7 +57,7 @@ const handleAddDefault = async (projectId: string, e: React.FormEvent) => {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="bg-blue-400 p-2 px-4 rounded font-bold text-white"
+              className="bg-sky-900 p-2 px-4 rounded font-bold text-white"
             >
               追加
             </button>

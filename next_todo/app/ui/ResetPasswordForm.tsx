@@ -3,10 +3,17 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import Image from "next/image";
+import EyeOpen from "@/public/ico/eye-open.svg";
+import EyeClose from "@/public/ico/eye-close.svg";
+
 export default function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [eyeIcon, setEyeIcon] = useState(EyeClose);
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -56,25 +63,59 @@ export default function ResetPasswordForm() {
       {message && <p className="text-green-600 mb-2">{message}</p>}
       {error && <p className="text-red-500 mb-2">{error}</p>}
       <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full p-2 border mb-2 rounded"
-          placeholder="新しいパスワード"
-        />
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          className="w-full p-2 border mb-4 rounded"
-          placeholder="新しいパスワード（確認）"
-        />
+        <div className="relative">
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full p-2 border mb-2 rounded"
+            placeholder="新しいパスワード"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              setShowPassword((prev) => !prev);
+              setEyeIcon(showPassword ? EyeClose : EyeOpen);
+            }}
+            className="absolute right-2 top-2"
+          >
+            <Image
+              src={eyeIcon}
+              alt="Toggle Password Visibility"
+              width={20}
+              height={20}
+            />
+          </button>
+        </div>
+        <div className="relative">
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="w-full p-2 border mb-4 rounded"
+            placeholder="新しいパスワード（確認）"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              setShowPassword((prev) => !prev);
+              setEyeIcon(showPassword ? EyeClose : EyeOpen);
+            }}
+            className="absolute right-2 top-2"
+          >
+            <Image
+              src={eyeIcon}
+              alt="Toggle Password Visibility"
+              width={20}
+              height={20}
+            />
+          </button>
+        </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded"
+          className="w-full bg-sky-900 text-white p-2 rounded"
           disabled={loading}
         >
           {loading ? "送信中..." : "再設定"}

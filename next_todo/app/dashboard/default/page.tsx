@@ -23,7 +23,7 @@ export default async function Page({
   const data = await getDefaultTemplate(userId, teamId); // デフォルトテンプレートを取得
   const sp = await searchParams;
   return (
-    <main>
+    <main className='p-6 md:p-12'>
       {/* 更新バナー */}
       <div className="text-right">
         <Arrart updated={sp.updated} />
@@ -31,12 +31,12 @@ export default async function Page({
       <div className="">
         <h1 className="mb-4 text-xl md:text-2xl font-bold">デフォルトチェックリスト一覧</h1>
         <div className="border border-2 border-gray-300 p-4 rounded w-[60%] mx-auto mt-8">
-          <div className="font-bold text-blue-500">⚫︎新規デフォルトテンプレート追加</div>
+          <div className="font-bold text-sky-900">⚫︎新規デフォルトテンプレート追加</div>
           <CreateTemplateForm />
 
         </div>
         {/* <div>
-          <Link href="/dashboard/project/create" className="text-blue-600 hover:underline">
+          <Link href="/dashboard/project/create" className="text-sky-900 hover:underline">
             新規作成
           </Link>
         </div> */}

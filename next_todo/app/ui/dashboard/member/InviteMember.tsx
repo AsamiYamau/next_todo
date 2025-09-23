@@ -29,7 +29,7 @@ export default function Invite({teamName,teamId}: {teamName: string, teamId: str
 
   return (
     <div className="mt-8">
-      <div className="font-bold text-blue-500">⚫︎新規メンバー追加</div>
+      <div className="font-bold text-sky-900">⚫︎新規メンバー追加</div>
       <div className="border border-2 border-gray-300 p-4 rounded w-[50%] mt-4 flex items-center justify-between">
         <input
           type="email"
@@ -38,7 +38,7 @@ export default function Invite({teamName,teamId}: {teamName: string, teamId: str
           onChange={(e) => setEmail(e.target.value)}
           className=' p-2 border border-gray-300 rounded w-[70%]'
         />
-        <button onClick={sendInvite} style={{ marginLeft: 10, padding: 8 }} className="bg-blue-400 p-2 px-4 rounded font-bold text-white">
+        <button onClick={sendInvite} style={{ marginLeft: 10, padding: 8 }} className="bg-sky-900 p-2 px-4 rounded font-bold text-white">
           招待送信
         </button>
       </div>

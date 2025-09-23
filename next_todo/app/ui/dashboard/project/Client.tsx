@@ -23,15 +23,15 @@ export default  function Category({ clients,clientId }: { clients: Client[]; cli
 
   return (
     <div className="">
-      <div className="font-bold text-blue-500">クライアントで絞り込む</div>
+      <div className="font-bold text-sky-900">クライアントで絞り込む</div>
       <ul className="mt-4 flex gap-4 flex-wrap">
         <li
-          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${clientId === undefined  ? 'bg-orange-400 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
+          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${clientId === undefined  ? 'bg-orange-700 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
           onClick={() => handleClick('all')} // クリックで全てのチェックリストに遷移する処理を追加
         >すべて</li>
         {clients.map((client) => (
           <li key={client.id} 
-          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${client.id === clientId ? 'bg-orange-400 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
+          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${client.id === clientId ? 'bg-orange-700 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
           onClick={() => handleClick(client.id)} // クリックでカテゴリーページに遷移する処理を追加
           >
             {client.name}

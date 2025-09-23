@@ -3,10 +3,10 @@ import { Suspense } from "react";
 
 export default function RegisterPage() {
   return (
-    <div>
+    <main className='p-6 md:p-12'>
       <Suspense fallback={<div>Loading...</div>}>
       <RegisterForm />
       </Suspense>
-    </div>
+    </main>
   );
 }

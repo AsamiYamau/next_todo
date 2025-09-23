@@ -36,24 +36,17 @@ export default async function ProjectDetailPage({
 
 
   return (
-    <main>
+    <main className='p-6 md:p-12'>
       {/* 更新バナー */}
       <div className="text-right">
         <Arrart updated={sp.updated} />
       </div>
-      <div className="flex items-center justify-between">
-        <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl font-bold`}>
-          提出前チェックリスト
-        </h1>
-        <AddDefault projectId={id} defaultTemplate={defaultTemplate} />
-      </div>
-
-      <div className="flex items-center justify-between p-4 mt-4">
+      <div className="md:flex items-center justify-between">
         <div>
           <div className='font-bold text-xl'>案件名：{project?.title ?? 'タイトル未設定'}</div>
           <div className='font-bold text-xl mt-2'>クライアント:{project?.client_name ?? 'クライアント未設定'}</div>
         </div>
-
+        <AddDefault projectId={id} defaultTemplate={defaultTemplate} />
       </div>
 
 

@@ -79,11 +79,11 @@ export default function CheckListForm({
 
   return (
     <div className="">
-      <div className="p-4 rounded mb-4 grid grid-cols-2 gap-8">
+      <div className="mt-4 rounded mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* チェックリスト新規追加 */}
         <div className="border border-2 border-gray-300 p-4 rounded">
-          <div className="font-bold text-blue-500">
-            ⚫︎新規リスト追加 （リスト個々にカテゴリーを紐付け）
+          <div className="font-bold text-sky-900">
+            ⚫︎新規リスト追加
           </div>
           <form onSubmit={handleSubmit} className="mt-4">
             <table className="w-full">
@@ -160,7 +160,7 @@ export default function CheckListForm({
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className="bg-blue-400 p-2 px-4 rounded font-bold text-white"
+                className="bg-sky-900 p-2 px-4 rounded font-bold text-white"
               >
                 追加
               </button>
@@ -169,8 +169,8 @@ export default function CheckListForm({
         </div>
         {/* カテゴリー追加 */}
         <div className="border border-2 border-gray-300 p-4 rounded">
-          <div className="font-bold text-blue-500">
-            ⚫︎新規カテゴリー追加 （projectにカテゴリーを紐付け）
+          <div className="font-bold text-sky-900">
+            ⚫︎新規カテゴリー追加
           </div>
           <form onSubmit={handleCategorySubmit} className="mt-4">
             <table className="w-full">
@@ -195,7 +195,7 @@ export default function CheckListForm({
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                className="bg-blue-400 p-2 px-4 rounded font-bold text-white"
+                className="bg-sky-900 p-2 px-4 rounded font-bold text-white"
               >
                 追加
               </button>

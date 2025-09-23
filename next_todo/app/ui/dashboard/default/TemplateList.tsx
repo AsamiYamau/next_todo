@@ -36,12 +36,12 @@ export default function TemplateList({ data }: { data: Template[] }) {
     <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {data.map((template) => (
         <li
-          className="flex items-start justify-between bg-sky-100 p-4 mt-4 border-2 border-blue-200 rounded"
+          className="flex items-start justify-between bg-sky-100 p-4 mt-4 border-2 border-sky-900 rounded"
           key={template.id}
         >
           <div className="w-3/4">
             <h2 className="font-bold">
-              <Link href={`/dashboard/default/${template.id}`} className="text-blue-600 underline hover:opacity-80">
+              <Link href={`/dashboard/default/${template.id}`} className="text-sky-900 underline hover:opacity-80">
                 {template.title}
               </Link>
             </h2>

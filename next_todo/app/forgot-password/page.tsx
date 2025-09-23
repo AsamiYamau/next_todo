@@ -7,6 +7,7 @@ export default function ForgotPasswordPage() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-20">
+    <main className="p-6 md:p-12 max-w-sm mx-auto mt-20">
       <h1 className="text-xl font-bold mb-4">パスワード再設定</h1>
       {message && <p className="text-green-600 mb-2">{message}</p>}
       {error && <p className="text-red-500 mb-2">{error}</p>}
@@ -46,12 +47,12 @@ export default function ForgotPasswordPage() {
         />
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded"
+          className="w-full bg-sky-900 text-white p-2 rounded"
           disabled={loading}
         >
           {loading ? "送信中..." : "送信"}
         </button>
       </form>
-    </div>
+    </main>
   );
 }

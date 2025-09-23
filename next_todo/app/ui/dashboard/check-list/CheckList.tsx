@@ -72,7 +72,7 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
       <ul>
         {checkList.map((item) => (
           <li
-            className="flex items-center justify-between bg-sky-100 p-4 mt-4 border-2 border-blue-200 rounded"
+            className="flex items-center justify-between bg-sky-50 p-4 mt-4 border-2 border-sky-900 rounded"
             key={item.id}
           >
             <div className="">
@@ -83,7 +83,7 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
                   item.categories.map((category) => (
                     <span
                       key={category.id}
-                      className="ml-2 bg-orange-400 text-white px-2 py-1 rounded"
+                      className="ml-2 bg-orange-700 text-white px-2 py-1 rounded"
                     >
                       {category.title}
                     </span>
@@ -91,30 +91,33 @@ export default function CheckList({ checkList, onStatusChange, projectId }: Prop
 
                 )}
               </h2>
-              <span className="text-sm mr-10">追加者：
+              <span className="text-sm mt-2 block md:inline md:mt-0 md:mr-4">追加者：
                 <span className="font-bold">{item.created_user_name}</span> {item.created_at}
               </span>
-              <span className="text-sm">確認者：
+              <span className="text-sm block md:inline">確認者：
                 <span className="font-bold">{item.checked_user_name}</span> {item.checked_at}
               </span>
             </div>
             <div>
+              <label>
+                {item.status}
               <input
                 type="checkbox"
                 checked={item.status === true}
                 onChange={() => onStatusChange(item.id, item.status,LoguinUser, LoguinUserName)}
               />
-              <label>{item.status}</label>
+                
+              </label>
               <div className="edit-list flex">
                 <Link
                   href={`/dashboard/project/${projectId}/check-list/${item.id}/edit`}
-                  className="text-blue-500 hover:underline"
+                  className="text-sky-900 hover:underline"
                 >
                   <Image src={EditIcon} alt="Edit" width={20} height={20} className="inline-block" />
                 </Link>
                 <button
                   type="button"
-                  className="ml-4 text-red-500 hover:underline"
+                  className="ml-2 text-red-500 hover:underline"
                   onClick={() => handleDelete(item.id, userId, teamId)}
                 >
                   <Image src={DeleteIcon} alt="Delete" width={20} height={20} className="inline-block" />

@@ -11,7 +11,7 @@ import AccountPanel from "@/app/ui/components/AccountPanel";
 export default async function Header() {
   const session = await getServerSession(authOptions);
   return (
-    <div className="flex h-full p-2 justify-between items-center">
+    <header className="flex h-full p-2 justify-between items-center shadow relative">
       <h1>
         <Link
           className="mb-2 flex items-end justify-start"
@@ -36,6 +36,6 @@ export default async function Header() {
           }}
         />
       )}
-    </div>
+    </header>
   );
 }

@@ -43,7 +43,7 @@ export default function ClientEditForm(
       <form onSubmit={handleSubmit}>
         <div className="flex mt-8 justify-between">
           <div className="w-[45%]">
-            <div className="font-bold text-blue-500">クライアント名</div>
+            <div className="font-bold text-sky-900">クライアント名</div>
             <input
               value={clientName}
               onChange={(e) => setClient(e.target.value)}
@@ -53,7 +53,7 @@ export default function ClientEditForm(
             />
           </div>
           <div className="w-[45%]">
-            <div className="font-bold text-blue-500">メモ</div>
+            <div className="font-bold text-sky-900">メモ</div>
             <textarea
               value={memo ?? ''}
               onChange={(e) => setMemo(e.target.value)}
@@ -63,7 +63,7 @@ export default function ClientEditForm(
           </div>
         </div>
         <div className="flex justify-center mt-4">
-          <button type="submit" className="bg-blue-400 p-2 px-4 rounded font-bold text-white">追加</button>
+          <button type="submit" className="bg-sky-900 p-2 px-4 rounded font-bold text-white">追加</button>
         </div>
       </form>
     </div>

@@ -30,12 +30,12 @@ export default function AccountPanel({ user }: { user: { name?: string; email?: 
           <div className="space-y-1">
             <p className=""><span className="font-bold">{user.name}</span>さん</p>
             <p>{user.email}</p>
-            <Link href="/dashboard/account" className="text-blue-500 underline">アカウント設定はこちら</Link>
+            <Link href="/dashboard/account" className="text-sky-900 underline">アカウント設定はこちら</Link>
           </div>
           <div className="mt-2 space-y-1">
             <p className="font-bold">プラン</p>
             <p>スタンダードプラン</p>
-            <a href="" className="text-blue-500 underline">プランの変更はこちら</a>
+            <a href="" className="text-sky-900 underline">プランの変更はこちら</a>
           </div>
           <SignOut />
         </div>

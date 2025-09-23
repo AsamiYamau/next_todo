@@ -24,15 +24,15 @@ const handleClick = async (id: string) => {
 
   return (
     <div className="">
-      <div className="font-bold text-blue-500">カテゴリーで絞り込む （projectに紐づいたカテゴリー一覧）</div>
+      <div className="font-bold text-sky-900">カテゴリーで絞り込む （projectに紐づいたカテゴリー一覧）</div>
       <ul className="mt-4 flex gap-4 flex-wrap">
         <li
-          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${id === undefined  ? 'bg-orange-400 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
+          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${id === undefined  ? 'bg-orange-700 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
           onClick={() => handleClick('all')} // クリックで全てのチェックリストに遷移する処理を追加
         >すべて</li>
         {categories.map((category) => (
           <li key={category.id} 
-          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${category.id === id ? 'bg-orange-400 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
+          className={`mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer ${category.id === id ? 'bg-orange-700 font-bold text-white' : ''}`} // 選択中のカテゴリーは色を変える
           onClick={() => handleClick(category.id)} // クリックでカテゴリーページに遷移する処理を追加
           >
             {category.title}
