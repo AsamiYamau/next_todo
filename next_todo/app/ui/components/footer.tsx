@@ -8,7 +8,7 @@ export default async function Footer() {
   return (
     <footer className="bg-gray-100 text-center p-4 mt-4">
       <div className="">
-        <ul className="flex justify-center space-x-4 mb-2">
+        <ul className="flex justify-center space-x-2 md:space-x-4 mb-2 flex-wrap">
           <li>
             <Link href="/terms" className="text-sm text-gray-600 hover:underline mx-2">
               利用規約
@@ -33,7 +33,7 @@ export default async function Footer() {
           )}
         </ul>
       </div>
-      <p className="text-sm text-gray-600">&copy; 2024 Your Company. All rights reserved.</p>
+      <p className="text-sm text-gray-600">&copy; 2025 Done Quest. All rights reserved.</p>
     </footer>
   );
 }

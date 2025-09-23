@@ -27,23 +27,23 @@ export default function CreateProjectForm({ clients }: { clients: { id: string; 
   return (
     <div className="">
       <form onSubmit={handleSubmit}>
-        <div className="flex mt-8 justify-between">
-          <div className="w-[45%]">
+        <div className="flex mt-8 gap-4 flex-col md:flex-row">
+          <div className="flex-1">
             <div className="font-bold text-sky-900">案件名</div>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="プロジェクト名"
               required
-              className='mb-4 p-2 border border-gray-300 rounded w-full'
+              className='p-2 border border-gray-300 rounded w-full'
             />
           </div>
-          <div className="w-[45%]">
+          <div className="flex-1">
             <div className="font-bold text-sky-900">クライアント名</div>
             <select
               value={client}
               onChange={(e) => setClient(e.target.value)}
-              className='mb-4 p-2 border border-gray-300 rounded w-full'
+              className='p-2 border border-gray-300 rounded w-full h-[42px]'
             >
               <option value="">クライアントを選択</option>
               {clients.map((c) => (

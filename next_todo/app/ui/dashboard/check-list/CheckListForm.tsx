@@ -32,7 +32,6 @@ export default function CheckListForm({
   const userId = (session?.user as any)?.id; // ユーザーIDを取得
   const teamId = (session?.user as any)?.team_id; // チームIDを取得
 
-
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCategories((prev) =>
@@ -79,84 +78,78 @@ export default function CheckListForm({
 
   return (
     <div className="">
-      <div className="mt-4 rounded mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="mt-4 rounded mb-4 flex flex-col md:flex-row gap-4">
         {/* チェックリスト新規追加 */}
-        <div className="border border-2 border-gray-300 p-4 rounded">
-          <div className="font-bold text-sky-900">
-            ⚫︎新規リスト追加
-          </div>
+        <div className="border border-2 border-gray-300 p-4 rounded flex-1">
+          <div className="font-bold text-sky-900">⚫︎新規リスト追加</div>
           <form onSubmit={handleSubmit} className="mt-4">
-            <table className="w-full">
-              <tbody>
-                <tr>
-                  <th className="text-left">項目名</th>
-                  <th className="text-left pl-4">カテゴリー</th>
-                </tr>
-                <tr className="mt-4">
-                  <td className="flex">
-                    <input
-                      type="text"
-                      placeholder="新しい項目"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      required
-                      className="border border-gray-300 p-2 rounded mb-2 w-full"
-                    />
-                  </td>
-                  <td className="pl-4">
-                    <div className="">
-                      {projectCategories.map((cat) => (
-                        <label
-                          key={cat.id}
-                          className="flex items-center mb-2 justify-between flex-wrap"
+            <div className="flex flex-col gap-4">
+              {/* 項目名 */}
+              <div className="flex-1">
+                <label className="block text-left font-bold mb-2">項目名</label>
+                <input
+                  type="text"
+                  placeholder="新しい項目"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  className="border border-gray-300 p-2 rounded mb-2 w-full"
+                />
+              </div>
+              {/* カテゴリー */}
+              <div className="flex-1">
+                <label className="block text-left font-bold mb-2 md:pl-4">
+                  カテゴリー
+                </label>
+                <div>
+                  {projectCategories.map((cat) => (
+                    <label
+                      key={cat.id}
+                      className="flex items-center mb-2 justify-between flex-wrap"
+                    >
+                      <span>
+                        <input
+                          type="checkbox"
+                          name="category"
+                          value={cat.id}
+                          checked={categories.includes(cat.id)}
+                          onChange={handleCategoryChange}
+                          className="mr-2"
+                        />
+                        <span className="font-bold mr-4">{cat.title}</span>
+                      </span>
+                      <span className="ml-auto">
+                        <Link
+                          href={`/dashboard/project/${projectId}/category/${cat.id}/edit`}
+                          className="hover:opacity-80 mr-2"
                         >
-                          <span>
-                            <input
-                              type="checkbox"
-                              name="category"
-                              value={cat.id}
-                              checked={categories.includes(cat.id)}
-                              onChange={handleCategoryChange}
-                              className="mr-2"
-                            />
-                            <span className="font-bold mr-4">{cat.title}</span>
-                          </span>
-                          <span className="ml-auto">
-                            <Link
-                              href={`/dashboard/project/${projectId}/category/${cat.id}/edit`}
-                              className="hover:opacity-80 mr-2"
-                            >
-                              <Image
-                                src={EditIcon}
-                                alt="Edit"
-                                width={20}
-                                height={20}
-                                className="inline-block"
-                              />
-                            </Link>
-                            <button
-                              type="button"
-                              className="hover:opacity-80 cursor-pointer"
-                              onClick={() =>
-                                handleDelete(cat.id, userId, teamId)
-                              }
-                            >
-                              <Image
-                                src={DeleteIcon}
-                                alt="Delete"
-                                width={20}
-                                height={20}
-                                className="inline-block"
-                              />
-                            </button>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                          <Image
+                            src={EditIcon}
+                            alt="Edit"
+                            width={20}
+                            height={20}
+                            className="inline-block"
+                          />
+                        </Link>
+                        <button
+                          type="button"
+                          className="hover:opacity-80 cursor-pointer"
+                          onClick={() => handleDelete(cat.id, userId, teamId)}
+                        >
+                          <Image
+                            src={DeleteIcon}
+                            alt="Delete"
+                            width={20}
+                            height={20}
+                            className="inline-block"
+                          />
+                        </button>
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
             <div className="flex justify-center mt-4">
               <button
                 type="submit"
@@ -168,10 +161,8 @@ export default function CheckListForm({
           </form>
         </div>
         {/* カテゴリー追加 */}
-        <div className="border border-2 border-gray-300 p-4 rounded">
-          <div className="font-bold text-sky-900">
-            ⚫︎新規カテゴリー追加
-          </div>
+        <div className="border border-2 border-gray-300 p-4 rounded flex-1">
+          <div className="font-bold text-sky-900">⚫︎新規カテゴリー追加</div>
           <form onSubmit={handleCategorySubmit} className="mt-4">
             <table className="w-full">
               <tbody>

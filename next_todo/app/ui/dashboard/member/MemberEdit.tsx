@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -7,38 +7,51 @@ import DeleteIcon from "@/public/ico/trash.svg";
 
 import { useState } from "react";
 
-export default function MemberEdit({member,userId,teamId}:
-  {member: { id: string; name: string; role: number };
+export default function MemberEdit({
+  member,
+  userId,
+  teamId,
+}: {
+  member: { id: string; name: string; role: number };
   userId: string;
   teamId: string;
 }) {
-    //権限変更ハンドラ
-    const [role, setRole] = useState(member.role);
+  //権限変更ハンドラ
+  const [role, setRole] = useState(member.role);
+  const [error, setError] = useState(""); // エラーメッセージ用
 
-    //編集ハンドラ
-    const handleEdit = async (userId: string, roleValue:number) => {
-      await fetch(`/api/member/edit`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, roleValue }),
-      });
-      window.location.reload();
+  //編集ハンドラ
+  const handleEdit = async (userId: string, roleValue: number, teamId: string) => {
+
+    //
+
+    const res = await fetch(`/api/member/edit`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, roleValue, teamId }),
+    });
+    window.location.reload();
+
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.error || "権限変更に失敗しました");
+      return;
     }
-    // 削除ハンドラ
-    const handleDelete = async (userId: string, teamId: string) => {
-      if (confirm("チームメンバーから削除しますか？")) {
-        // await fetch(`/api/member/delete`, { 
-        //   method: "DELETE",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ userId, teamId })
-  
-        //  });
-        // window.location.reload();
-      }
-    };
+  };
+  // 削除ハンドラ
+  const handleDelete = async (userId: string, teamId: string) => {
+    if (confirm("チームメンバーから削除しますか？")) {
+      // await fetch(`/api/member/delete`, {
+      //   method: "DELETE",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ userId, teamId })
+      //  });
+      // window.location.reload();
+    }
+  };
 
   return (
-    <div className="edit-list flex justify-end">
+    <div className="edit-list flex justify-end relative">
       <select
         value={role}
         onChange={(e) => setRole(Number(e.target.value))}
@@ -47,9 +60,9 @@ export default function MemberEdit({member,userId,teamId}:
         <option value={1}>管理者</option>
         <option value={2}>編集者</option>
       </select>
-      <button 
-      className="text-sm bg-sky-900 p-1 px-4 rounded font-bold text-white"
-      onClick={() => handleEdit(member.id, role)}
+      <button
+        className="text-sm bg-sky-900 p-1 px-4 rounded font-bold text-white"
+        onClick={() => handleEdit(member.id, role, teamId)}
       >
         権限を変更
       </button>
@@ -67,6 +80,9 @@ export default function MemberEdit({member,userId,teamId}:
           className="inline-block"
         />
       </button>
+      {error && (
+        <p className="text-red-600 mt-2 absolute right-0 bottom-[-30px]">{error}</p>
+      )}
     </div>
   );
 }
