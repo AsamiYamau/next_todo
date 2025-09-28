@@ -2,7 +2,7 @@
 
 
 import postgres from 'postgres';
-import { CheckListItem,Project,CheckListItemWithCategories,Client, DefaultCheckListItemWithCategories } from './definitions';
+import { CheckListItem,Project,CheckListItemWithCategories,Client, DefaultCheckListItemWithCategories,User } from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -459,10 +459,3 @@ export async function getTeamMembers(teamId: string): Promise<{ id: string; name
   return data;
 }
 
-//ユーザー情報の取得
-export async function getUserById(userId: string): Promise<{ id: string; name: string; email: string; password: string; role: number; team_id: string | null } | null> {
-  const data = await sql<{ id: string; name: string; email: string; password: string; role: number; team_id: string | null }[]>`
-    SELECT id, name, email, password, role, team_id FROM users WHERE id = ${userId} 
-  `;
-  return data.length > 0 ? data[0] : null;
-}

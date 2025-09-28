@@ -29,12 +29,22 @@ export default async function Header() {
         </Link>
       </h1>
       {session && (
-        <AccountPanel
-          user={{
-            name: session.user?.name ?? undefined,
-            email: session.user?.email ?? undefined,
-          }}
-        />
+        <div className="flex items-center gap-4">
+          <p className="text-sm">30日を過ぎると自動で退会となり、全てのデータが削除されます。</p>
+          <Link 
+          href={"/subscription-start"} 
+          className="mb-2 p-2 rounded hover:bg-orange-500 cursor-pointer bg-orange-700 font-bold text-white">
+          本契約はコチラ
+          </Link>
+
+          <AccountPanel
+            user={{
+              name: session.user?.name ?? undefined,
+              email: session.user?.email ?? undefined,
+              role: (session.user as any)?.role ?? undefined,
+            }}
+          />
+        </div>
       )}
     </header>
   );

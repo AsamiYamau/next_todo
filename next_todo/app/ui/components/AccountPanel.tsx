@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SignOut from '@/app/ui/dashboard/sign-out';
 
-export default function AccountPanel({ user }: { user: { name?: string; email?: string } }) {
+export default function AccountPanel({ user }: { user: { name?: string; email?: string; role?: number; } }) {
   const [show, setShow] = useState(false);
 
   return (
@@ -32,11 +32,14 @@ export default function AccountPanel({ user }: { user: { name?: string; email?: 
             <p>{user.email}</p>
             <Link href="/dashboard/account" className="text-sky-900 underline">アカウント設定はこちら</Link>
           </div>
+          {/* roleが1（オーナー）の場合のみプラン情報を表示 */}
+          {(user.role === 1) && (
           <div className="mt-2 space-y-1">
             <p className="font-bold">プラン</p>
             <p>スタンダードプラン</p>
             <a href="" className="text-sky-900 underline">プランの変更はこちら</a>
           </div>
+          )}
           <SignOut />
         </div>
       </div>

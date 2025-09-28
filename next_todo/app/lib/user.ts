@@ -17,11 +17,12 @@ export async function getAllUsers(): Promise<User[]> {
   return data;
 }
 
-export async function getUserById(id: string): Promise<User | null> {
+//ユーザー情報の取得
+export async function getUserById(userId: string): Promise<User | null> {
   const data = await sql<User[]>`
-    SELECT id, name, email, role FROM users WHERE id = ${id}
+    SELECT id, name, email, password, role, team_id, plan, created_at, stripe_customer_id FROM users WHERE id = ${userId} 
   `;
-  return data[0] ?? null;
+  return data.length > 0 ? data[0] : null;
 }
 
 export async function updateUserRole(id: string, role: number): Promise<void> {
@@ -49,4 +50,22 @@ export async function markInviteAccepted(token: string) {
   await sql`
     UPDATE invites SET accepted = true WHERE token = ${token}
   `;
+}
+
+//stripe 
+export async function updateUserPlanByStripeCustomerId(stripeCustomerId: string, priceId: string | null) {
+  const planMap: Record<string, number> = {
+    "price_1SANk7Ch2J0J1cSXtDN9tN0v": 1,
+    "price_1SANqICh2J0J1cSXuQe8FziZ": 1,
+    "price_1SANl4Ch2J0J1cSX8KRCgCbE": 2,
+    "price_1SANrgCh2J0J1cSXQc8VFVkk": 2,
+    "price_1SANlmCh2J0J1cSXKbcxSvGm": 3,
+    "price_1SANsxCh2J0J1cSXLNQ78Val": 3,
+  };
+
+
+
+  const plan = priceId ? planMap[priceId] : null;
+
+  await sql`UPDATE users SET plan = ${plan} WHERE stripe_customer_id = ${stripeCustomerId}`;
 }

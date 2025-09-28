@@ -1,5 +1,5 @@
 import { updateUserPassword } from "@/app/lib/actions";
-import { getUserById } from "@/app/lib/data";
+import { getUserById } from "@/app/lib/user";
 import bcrypt from 'bcryptjs';
 
 

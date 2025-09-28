@@ -6,6 +6,9 @@ export type User = {
   role: number;
   plan: number; // ユーザープランを追加
   team_id: string | null; // チームIDをオプションとして追加
+  created_at: string;
+  stripe_customer_id?: string; // Stripeの顧客IDをオプションとして
+  stripe_subscription_id?: string; // StripeのサブスクリプションIDをオプションとして
 };
 
 export type CheckListItem = {

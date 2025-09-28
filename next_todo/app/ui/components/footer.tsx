@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
+import SubscriptionEnd from "@/app/ui/components/SubscriptionEnd";
 
 export default async function Footer() {
   const session = await getServerSession(authOptions);
@@ -26,9 +27,7 @@ export default async function Footer() {
           </li>
           {session && (
             <li>
-              <Link href="/dashboard/account/delete" className="text-sm text-gray-600 hover:underline mx-2">
-                退会
-              </Link>
+              <SubscriptionEnd subscriptionId={(session.user as any)?.stripe_subscription_id} />
             </li>
           )}
         </ul>

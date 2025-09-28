@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
   // 招待トークンがあれば検証しteamId取得
   let teamId = null;
-  let role = 1; // デフォルトは管理者ユーザー
+  let role = 1; // デフォルトはオーナーユーザー
   if (token) {
     const invite = await getInviteByToken(token);
     if (!invite) {
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "招待リンクの有効期限が切れています" }, { status: 400 });
     }
     teamId = invite.team_id;
-    role = 2; // 招待ユーザーは通常ユーザー
+    role = 3; // 招待ユーザーは通常ユーザー
   }
 
   const hashed = await bcrypt.hash(password, 10);
