@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
+  // Webhook 用はスキップ
+  if (req.nextUrl.pathname.startsWith("/api/webhook-stripe")) {
+    return NextResponse.next();
+  }
+
   const auth = req.headers.get("authorization");
 
   if (auth) {
