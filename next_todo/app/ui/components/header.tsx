@@ -39,6 +39,7 @@ export default async function Header() {
 
           <AccountPanel
             user={{
+              id: (session.user as any)?.id ?? undefined,
               name: session.user?.name ?? undefined,
               email: session.user?.email ?? undefined,
               role: (session.user as any)?.role ?? undefined,

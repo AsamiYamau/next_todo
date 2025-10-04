@@ -4,8 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 import SignOut from '@/app/ui/dashboard/sign-out';
 
-export default function AccountPanel({ user }: { user: { name?: string; email?: string; role?: number; } }) {
+export default function AccountPanel({ user }: { user: { id: string; name?: string; email?: string; role?: number; } }) {
   const [show, setShow] = useState(false);
+
+  const goToPortal = async () => {
+  const res = await fetch("/api/subscription-change", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId: user.id  }),
+  });
+  const data = await res.json();
+  if (data.url) {
+    window.location.href = data.url; // Stripe Customer Portal に飛ぶ
+  } else {
+    console.error(data.error);
+  }
+};
+
 
   return (
     <>
@@ -37,7 +52,7 @@ export default function AccountPanel({ user }: { user: { name?: string; email?: 
           <div className="mt-2 space-y-1">
             <p className="font-bold">プラン</p>
             <p>スタンダードプラン</p>
-            <a href="" className="text-sky-900 underline">プランの変更はこちら</a>
+            <div onClick={goToPortal} className="text-sky-900 underline">プランの変更はこちら</div>
           </div>
           )}
           <SignOut />

@@ -28,7 +28,7 @@ export default function NavLinks() {
 
 ];
   // ユーザーのロールが1（オーナー）か、2（管理者）でない場合は
-  if (userRole !== 1 || userRole !== 2) {
+  if (userRole !== 1 && userRole !== 2) {
     // メンバー管理のリンクを除外
     links = links.filter(link => link.name !== 'メンバー管理');
   }
