@@ -20,7 +20,7 @@ export const authOptions = {
         const valid = await bcrypt.compare(credentials!.password, user.password);
         if (!valid) return null;
 
-
+ 
         return {
           id: user.id,
           name: user.name,
@@ -47,7 +47,7 @@ callbacks: {
       token.role = (user as any).role; // User型にroleが含まれていないため
       token.plan = (user as any).plan; 
       token.team_id = (user as any).team_id; // チームIDを追加
-      token.subscriptionId = (user as any).stripe_subscription_id; // subscriptionIdを追加
+      token.stripe_subscription_id = (user as any).stripe_subscription_id; // stripe_subscription_idを追加
       
     }
     return token;
@@ -58,7 +58,7 @@ async session({ session, token }: { session: Session; token: JWT }) {
   (session.user as any).role = (token as any).role;
   (session.user as any).plan = (token as any).plan; 
   (session.user as any).team_id = (token as any).team_id; // チームIDを追加
-  (session.user as any).subscriptionId = (token as any).subscriptionId; // subscriptionIdを追加
+  (session.user as any).stripe_subscription_id = (token as any).stripe_subscription_id; // stripe_subscription_idを追加
   }
   return session;
 }

@@ -23,7 +23,8 @@ export default function CancelSubscriptionButton({ subscriptionId }: { subscript
         setError(data.error || "退会に失敗しました");
       } else {
         setMessage("退会手続きが完了しました");
-        
+        //ユーザーのデータを全て削除し、リダイレクト
+
       }
     } catch {
       setError("通信エラーが発生しました");
